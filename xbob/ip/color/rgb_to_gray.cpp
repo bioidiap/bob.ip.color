@@ -162,6 +162,141 @@ PyObject* PyBobIpColor_RgbToGray (PyObject*, PyObject* args, PyObject* kwds) {
 
 }
 
+static PyObject* PyBobIpColor_GrayToRgb_Array(PyObject* args, PyObject* kwds) {
+
+  static const char* const_kwlist[] = {"input", "output", 0};
+  static char** kwlist = const_cast<char**>(const_kwlist);
+
+  PyBlitzArrayObject* input = 0;
+  PyBlitzArrayObject* output = 0;
+
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "O&|O&", kwlist,
+        &PyBlitzArray_Converter, &input,
+        &PyBlitzArray_OutputConverter, &output
+        )) return 0;
+
+  //protects acquired resources through this scope
+  auto input_ = make_safe(input);
+  auto output_ = make_xsafe(output);
+
+  if (!check_and_allocate(2, 3, input_, output_)) return 0;
+
+  output = output_.get();
+
+  switch (input->type_num) {
+    case NPY_UINT8:
+      bob::ip::gray_to_rgb(
+          *PyBlitzArrayCxx_AsBlitz<uint8_t,2>(input),
+          *PyBlitzArrayCxx_AsBlitz<uint8_t,3>(output)
+          );
+    case NPY_UINT16:
+      bob::ip::gray_to_rgb(
+          *PyBlitzArrayCxx_AsBlitz<uint16_t,2>(input),
+          *PyBlitzArrayCxx_AsBlitz<uint16_t,3>(output)
+          );
+    case NPY_FLOAT64:
+      bob::ip::gray_to_rgb(
+          *PyBlitzArrayCxx_AsBlitz<double,2>(input),
+          *PyBlitzArrayCxx_AsBlitz<double,3>(output)
+          );
+    default:
+      PyErr_Format(PyExc_NotImplementedError, "function has no support for data type `%s', choose from uint8, uint16 or float64", PyBlitzArray_TypenumAsString(input->type_num));
+      return 0;
+  }
+
+  Py_INCREF(output);
+  return PyBlitzArray_NUMPY_WRAP(reinterpret_cast<PyObject*>(output));
+
+}
+
+static PyObject* PyBobIpColor_GrayToRgb_Scalar(PyObject* args, PyObject* kwds) {
+
+  static const char* const_kwlist[] = {"y", 0};
+  static char** kwlist = const_cast<char**>(const_kwlist);
+
+  PyObject* y = 0;
+
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "O", kwlist, &y)) return 0;
+
+  //checks all input objects are scalars
+  if (!PyArray_IsAnyScalar(y)) {
+    PyErr_Format(PyExc_TypeError, "input element `y' should be a python or numpy scalar, not `%s'", Py_TYPE(y)->tp_name);
+    return 0;
+  }
+
+  //checks the type for one of the channels, cast all
+  int type_num = PyArray_ObjectType(y, NPY_NOTYPE);
+
+  switch (type_num) {
+    case NPY_UINT8:
+      {
+        uint8_t r, g, b;
+        bob::ip::gray_to_rgb_one(PyBlitzArrayCxx_AsCScalar<uint8_t>(y), r, g, b);
+        auto r_ = make_safe(PyBlitzArrayCxx_FromCScalar(r));
+        auto g_ = make_safe(PyBlitzArrayCxx_FromCScalar(g));
+        auto b_ = make_safe(PyBlitzArrayCxx_FromCScalar(b));
+        return Py_BuildValue("(OOO)", r_.get(), g_.get(), b_.get());
+      }
+    case NPY_UINT16:
+      {
+        uint16_t r, g, b;
+        bob::ip::gray_to_rgb_one(PyBlitzArrayCxx_AsCScalar<uint16_t>(y), r, g, b);
+        auto r_ = make_safe(PyBlitzArrayCxx_FromCScalar(r));
+        auto g_ = make_safe(PyBlitzArrayCxx_FromCScalar(g));
+        auto b_ = make_safe(PyBlitzArrayCxx_FromCScalar(b));
+        return Py_BuildValue("(OOO)", r_.get(), g_.get(), b_.get());
+      }
+    case NPY_FLOAT64:
+      {
+        double r, g, b;
+        bob::ip::gray_to_rgb_one(PyBlitzArrayCxx_AsCScalar<double>(y), r, g, b);
+        auto r_ = make_safe(PyBlitzArrayCxx_FromCScalar(r));
+        auto g_ = make_safe(PyBlitzArrayCxx_FromCScalar(g));
+        auto b_ = make_safe(PyBlitzArrayCxx_FromCScalar(b));
+        return Py_BuildValue("(OOO)", r_.get(), g_.get(), b_.get());
+      }
+    default:
+      PyErr_Format(PyExc_NotImplementedError, "function has no support for data type `%s', choose from uint8, uint16 or float64", PyBlitzArray_TypenumAsString(type_num));
+  }
+
+  return 0;
+}
+
+PyObject* PyBobIpColor_GrayToRgb (PyObject*, PyObject* args, PyObject* kwds) {
+
+  Py_ssize_t nargs = (args?PyTuple_Size(args):0) + (kwds?PyDict_Size(kwds):0);
+
+  switch (nargs) {
+
+    case 1: //should pass an array
+      {
+        PyObject* arg = 0; ///< borrowed (don't delete)
+        if (PyTuple_Size(args)) arg = PyTuple_GET_ITEM(args, 0);
+        else {
+          PyObject* tmp = PyDict_Values(kwds);
+          auto tmp_ = make_safe(tmp);
+          arg = PyList_GET_ITEM(tmp, 0);
+        }
+
+        if (PyArray_IsAnyScalar(arg)) {
+          return PyBobIpColor_GrayToRgb_Scalar(args, kwds);
+        }
+        //else, continues to the next case item
+      }
+
+    case 2:
+      return PyBobIpColor_GrayToRgb_Array(args, kwds);
+
+    default:
+
+      PyErr_Format(PyExc_RuntimeError, "number of arguments mismatch - function requires 1 or 2 arguments, but you provided %" PY_FORMAT_SIZE_T "d (see help)", nargs);
+
+  }
+
+  return 0;
+
+}
+
 /**
 static object gray_to_rgb(const object& y, const object& dtype){
   bob::python::dtype d(dtype);
