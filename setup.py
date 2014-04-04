@@ -45,8 +45,9 @@ setup(
         ),
       Extension("xbob.ip.color._library",
         [
-          "xbob/sp/color.cpp",
-          "xbob/sp/main.cpp",
+          "xbob/ip/color/utils.cpp",
+          "xbob/ip/color/rgb_to_gray.cpp",
+          "xbob/ip/color/main.cpp",
           ],
         packages = packages,
         version = version,
