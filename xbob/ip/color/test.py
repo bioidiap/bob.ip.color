@@ -5,7 +5,7 @@
 #
 # Copyright (C) 2011-2014 Idiap Research Institute, Martigny, Switzerland
 
-"""Test color conversions available in bob.ip.color
+"""Test color conversions available in color
 """
 
 import os
@@ -14,6 +14,7 @@ import numpy
 import colorsys
 import pkg_resources
 import nose.tools
+import xbob.io
 
 from . import *
 
@@ -33,13 +34,13 @@ def test_hsv():
     for g in numpy.arange(0, 1+step, step):
       for b in numpy.arange(0, 1+step, step):
         # First test the correctness
-        ht, st, vt = bob.ip.rgb_to_hsv(r, g, b, dtype='float')
+        ht, st, vt = rgb_to_hsv(r, g, b, dtype='float')
         hp, sp, vp = colorsys.rgb_to_hsv(r, g, b)
         assert abs(ht - hp) < 1e-6
         assert abs(st - sp) < 1e-6
         assert abs(vt - vp) < 1e-6
         # And that we can invert the result using bob
-        r2, g2, b2 = bob.ip.hsv_to_rgb(ht, st, vt, dtype='float')
+        r2, g2, b2 = hsv_to_rgb(ht, st, vt, dtype='float')
         assert abs(r2 - r) < 1e-6
         assert abs(g2 - g) < 1e-6
         assert abs(b2 - b) < 1e-6
@@ -51,13 +52,13 @@ def test_hsv():
     for g in l:
       for b in l:
         # First test the correctness
-        ht, st, vt = bob.ip.rgb_to_hsv(r, g, b, dtype='float')
+        ht, st, vt = rgb_to_hsv(r, g, b, dtype='float')
         hp, sp, vp = colorsys.rgb_to_hsv(r, g, b)
         assert abs(ht - hp) < 1e-6
         assert abs(st - sp) < 1e-6
         assert abs(vt - vp) < 1e-6
         # And that we can invert the result using bob
-        r2, g2, b2 = bob.ip.hsv_to_rgb(ht, st, vt, dtype='float')
+        r2, g2, b2 = hsv_to_rgb(ht, st, vt, dtype='float')
         assert abs(r2 - r) < 1e-6
         assert abs(g2 - g) < 1e-6
         assert abs(b2 - b) < 1e-6
@@ -74,13 +75,13 @@ def test_hsl():
     for g in numpy.arange(0, 1+step, step):
       for b in numpy.arange(0, 1+step, step):
         # First test the correctness
-        ht, st, lt = bob.ip.rgb_to_hsl(r, g, b, dtype='float')
+        ht, st, lt = rgb_to_hsl(r, g, b, dtype='float')
         hp, lp, sp = colorsys.rgb_to_hls(r, g, b)
         assert abs(ht - hp) < 1e-6
         assert abs(st - sp) < 1e-6
         assert abs(lt - lp) < 1e-6
         # And that we can invert the result using bob
-        r2, g2, b2 = bob.ip.hsl_to_rgb(ht, st, lt, dtype='float')
+        r2, g2, b2 = hsl_to_rgb(ht, st, lt, dtype='float')
         assert abs(r2 - r) < 1e-6
         assert abs(g2 - g) < 1e-6
         assert abs(b2 - b) < 1e-6
@@ -92,13 +93,13 @@ def test_hsl():
     for g in l:
       for b in l:
         # First test the correctness
-        ht, st, lt = bob.ip.rgb_to_hsl(r, g, b, dtype='float')
+        ht, st, lt = rgb_to_hsl(r, g, b, dtype='float')
         hp, lp, sp = colorsys.rgb_to_hls(r, g, b)
         assert abs(ht - hp) < 1e-6
         assert abs(st - sp) < 1e-6
         assert abs(lt - lp) < 1e-6
         # And that we can invert the result using bob
-        r2, g2, b2 = bob.ip.hsl_to_rgb(ht, st, lt, dtype='float')
+        r2, g2, b2 = hsl_to_rgb(ht, st, lt, dtype='float')
         assert abs(r2 - r) < 1e-6
         assert abs(g2 - g) < 1e-6
         assert abs(b2 - b) < 1e-6
@@ -114,9 +115,9 @@ def test_yuv():
     for g in numpy.arange(0, 1+step, step):
       for b in numpy.arange(0, 1+step, step):
         # First test the correctness
-        yt, ut, vt = bob.ip.rgb_to_yuv(r, g, b, dtype='float')
+        yt, ut, vt = rgb_to_yuv(r, g, b, dtype='float')
         # And that we can invert the result using bob
-        r2, g2, b2 = bob.ip.yuv_to_rgb(yt, ut, vt, dtype='float')
+        r2, g2, b2 = yuv_to_rgb(yt, ut, vt, dtype='float')
         assert abs(r2 - r) < 1e-4
         assert abs(g2 - g) < 1e-4
         assert abs(b2 - b) < 1e-4
@@ -146,8 +147,8 @@ def test_int_conversions():
   for r in list(range(0,5)) + list(range(120,130)) + list(range(253,256)):
     for g in list(range(0,6)) + list(range(125,135)) + list(range(252,256)):
       for b in list(range(0,7)) + list(range(127,137)) + list(range(252,256)):
-        ht, st, vt = bob.ip.rgb_to_hsv(r, g, b, dtype='uint8')
-        r2, g2, b2 = bob.ip.hsv_to_rgb(ht, st, vt, dtype='uint8')
+        ht, st, vt = rgb_to_hsv(r, g, b, dtype='uint8')
+        r2, g2, b2 = hsv_to_rgb(ht, st, vt, dtype='uint8')
         #mx2 = max(abs(r2-r), abs(g2-g), abs(b2-b))
         #correct within a 2% margin
         #if mx2 > mx and (mx2/255.) < 0.02: mx = mx2
@@ -160,8 +161,8 @@ def test_int_conversions():
   for r in list(range(0,5)) + list(range(120,130)) + list(range(253,256)):
     for g in list(range(0,6)) + list(range(125,135)) + list(range(252,256)):
       for b in list(range(0,7)) + list(range(127,137)) + list(range(252,256)):
-        ht, st, lt = bob.ip.rgb_to_hsl(r, g, b, dtype='uint8')
-        r2, g2, b2 = bob.ip.hsl_to_rgb(ht, st, lt, dtype='uint8')
+        ht, st, lt = rgb_to_hsl(r, g, b, dtype='uint8')
+        r2, g2, b2 = hsl_to_rgb(ht, st, lt, dtype='uint8')
         #mx2 = max(abs(r2-r), abs(g2-g), abs(b2-b))
         #correct within a 2% margin
         #if mx2 > mx and (mx2/255.) < 0.02: mx = mx2
@@ -174,8 +175,8 @@ def test_int_conversions():
   for r in list(range(0,5)) + list(range(120,130)) + list(range(253,256)):
     for g in list(range(0,6)) + list(range(125,135)) + list(range(252,256)):
       for b in list(range(0,7)) + list(range(127,137)) + list(range(252,256)):
-        yt, ut, vt = bob.ip.rgb_to_yuv(r, g, b, dtype='uint8')
-        r2, g2, b2 = bob.ip.yuv_to_rgb(yt, ut, vt, dtype='uint8')
+        yt, ut, vt = rgb_to_yuv(r, g, b, dtype='uint8')
+        r2, g2, b2 = yuv_to_rgb(yt, ut, vt, dtype='uint8')
         #mx2 = max(abs(r2-r), abs(g2-g), abs(b2-b))
         #correct within a 2% margin
         #if mx2 > mx and (mx2/255.) < 0.02: mx = mx2
@@ -189,8 +190,8 @@ def test_int_conversions():
   for r in list(range(0,5)) + list(range(30000,30005)) + list(range(65530,65536)):
     for g in list(range(0,6)) + list(range(30002,3007)) + list(range(65525,65532)):
       for b in list(range(0,7)) + list(range(3003,3008)) + list(range(65524,65531)):
-        ht, st, vt = bob.ip.rgb_to_hsv(r, g, b, dtype='uint16')
-        r2, g2, b2 = bob.ip.hsv_to_rgb(ht, st, vt, dtype='uint16')
+        ht, st, vt = rgb_to_hsv(r, g, b, dtype='uint16')
+        r2, g2, b2 = hsv_to_rgb(ht, st, vt, dtype='uint16')
         #mx2 = max(abs(r2-r), abs(g2-g), abs(b2-b))
         #if mx2 > mx and (mx2/65535.) < 0.0001: mx = mx2
         assert abs(r2 - r) <= mx
@@ -202,8 +203,8 @@ def test_int_conversions():
   for r in list(range(0,5)) + list(range(30000,30005)) + list(range(65530,65536)):
     for g in list(range(0,6)) + list(range(30002,3007)) + list(range(65525,65532)):
       for b in list(range(0,7)) + list(range(3003,3008)) + list(range(65524,65531)):
-        ht, st, lt = bob.ip.rgb_to_hsl(r, g, b, dtype='uint16')
-        r2, g2, b2 = bob.ip.hsl_to_rgb(ht, st, lt, dtype='uint16')
+        ht, st, lt = rgb_to_hsl(r, g, b, dtype='uint16')
+        r2, g2, b2 = hsl_to_rgb(ht, st, lt, dtype='uint16')
         #mx2 = max(abs(r2-r), abs(g2-g), abs(b2-b))
         #if mx2 > mx and (mx2/65535.) < 0.0001: mx = mx2
         assert abs(r2 - r) <= mx
@@ -215,8 +216,8 @@ def test_int_conversions():
   for r in list(range(0,10)) + list(range(120,130)) + list(range(250,256)):
     for g in list(range(5,12)) + list(range(125,135)) + list(range(240,252)):
       for b in list(range(7,15)) + list(range(127,137)) + list(range(235,251)):
-        yt, ut, vt = bob.ip.rgb_to_yuv(r, g, b, dtype='uint16')
-        r2, g2, b2 = bob.ip.yuv_to_rgb(yt, ut, vt, dtype='uint16')
+        yt, ut, vt = rgb_to_yuv(r, g, b, dtype='uint16')
+        r2, g2, b2 = yuv_to_rgb(yt, ut, vt, dtype='uint16')
         #mx2 = max(abs(r2-r), abs(g2-g), abs(b2-b))
         #if mx2 > mx and (mx2/65535.) < 0.0001: mx = mx2
         assert abs(r2 - r) <= mx
@@ -231,17 +232,15 @@ def test_gray_halves():
 
   if platform.architecture()[0] == '64bit':
     # do a full test, require all values to be the same
-    correct = bob.io.load(F('gray-u8-mids.hdf5'))
+    correct = xbob.io.load(F('gray-u8-mids.hdf5'))
     for k in range(correct.shape[0]):
       nose.tools.eq_(correct[k,3],
-          bob.ip.rgb_to_gray(*[int(z) for z in correct[k,:3]], dtype='uint8')
-          )
+          rgb_to_gray(*[numpy.uint8(z) for z in correct[k,:3]]))
   else:
     # do a full test, require all values to be the same
     # use a special 32-bit file. About 1600 cases do not match the 64-bit
     # ones.
-    correct = bob.io.load(F('gray-u8-mids-32bits.hdf5'))
+    correct = xbob.io.load(F('gray-u8-mids-32bits.hdf5'))
     for k in range(correct.shape[0]):
       nose.tools.eq_(correct[k,3],
-          bob.ip.rgb_to_gray(*[int(z) for z in correct[k,:3]], dtype='uint8')
-          )
+          rgb_to_gray(*[numpy.uint8(z) for z in correct[k,:3]]))
