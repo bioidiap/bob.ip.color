@@ -17,7 +17,7 @@
  Python bindings for bob.ip.color
 ==================================
 
-This package contains a set of Pythonic bindings for Bob's Impage Processing
+This package contains a set of Pythonic bindings for Bob's Image Processing
 tools for color conversion.
 
 Installation
