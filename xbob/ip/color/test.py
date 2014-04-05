@@ -75,13 +75,13 @@ def test_hsl():
     for g in numpy.arange(0, 1+step, step):
       for b in numpy.arange(0, 1+step, step):
         # First test the correctness
-        ht, st, lt = rgb_to_hsl(r, g, b, dtype='float')
+        ht, st, lt = rgb_to_hsl(r, g, b)
         hp, lp, sp = colorsys.rgb_to_hls(r, g, b)
         assert abs(ht - hp) < 1e-6
         assert abs(st - sp) < 1e-6
         assert abs(lt - lp) < 1e-6
         # And that we can invert the result using bob
-        r2, g2, b2 = hsl_to_rgb(ht, st, lt, dtype='float')
+        r2, g2, b2 = hsl_to_rgb(ht, st, lt)
         assert abs(r2 - r) < 1e-6
         assert abs(g2 - g) < 1e-6
         assert abs(b2 - b) < 1e-6
@@ -93,13 +93,13 @@ def test_hsl():
     for g in l:
       for b in l:
         # First test the correctness
-        ht, st, lt = rgb_to_hsl(r, g, b, dtype='float')
+        ht, st, lt = rgb_to_hsl(r, g, b)
         hp, lp, sp = colorsys.rgb_to_hls(r, g, b)
         assert abs(ht - hp) < 1e-6
         assert abs(st - sp) < 1e-6
         assert abs(lt - lp) < 1e-6
         # And that we can invert the result using bob
-        r2, g2, b2 = hsl_to_rgb(ht, st, lt, dtype='float')
+        r2, g2, b2 = hsl_to_rgb(ht, st, lt)
         assert abs(r2 - r) < 1e-6
         assert abs(g2 - g) < 1e-6
         assert abs(b2 - b) < 1e-6
@@ -218,8 +218,8 @@ def test_int_conversions():
   for r in list(range(0,5)) + list(range(30000,30005)) + list(range(65530,65536)):
     for g in list(range(0,6)) + list(range(30002,3007)) + list(range(65525,65532)):
       for b in list(range(0,7)) + list(range(3003,3008)) + list(range(65524,65531)):
-        ht, st, lt = rgb_to_hsl(r, g, b, dtype='uint16')
-        r2, g2, b2 = hsl_to_rgb(ht, st, lt, dtype='uint16')
+        ht, st, lt = rgb_to_hsl(u16(r), u16(g), u16(b))
+        r2, g2, b2 = hsl_to_rgb(u16(ht), u16(st), u16(lt))
         #mx2 = max(abs(r2-r), abs(g2-g), abs(b2-b))
         #if mx2 > mx and (mx2/65535.) < 0.0001: mx = mx2
         assert abs(r2 - r) <= mx

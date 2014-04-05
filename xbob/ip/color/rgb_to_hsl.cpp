@@ -10,7 +10,7 @@
 #include "utils.h"
 #include <bob/ip/color.h>
 
-static PyObject* PyBobIpColor_RgbToHsv_Array(PyObject* args, PyObject* kwds) {
+static PyObject* PyBobIpColor_RgbToHsl_Array(PyObject* args, PyObject* kwds) {
 
   static const char* const_kwlist[] = {"input", "output", 0};
   static char** kwlist = const_cast<char**>(const_kwlist);
@@ -33,17 +33,17 @@ static PyObject* PyBobIpColor_RgbToHsv_Array(PyObject* args, PyObject* kwds) {
 
   switch (input->type_num) {
     case NPY_UINT8:
-      bob::ip::rgb_to_hsv(
+      bob::ip::rgb_to_hsl(
           *PyBlitzArrayCxx_AsBlitz<uint8_t,3>(input),
           *PyBlitzArrayCxx_AsBlitz<uint8_t,3>(output)
           );
     case NPY_UINT16:
-      bob::ip::rgb_to_hsv(
+      bob::ip::rgb_to_hsl(
           *PyBlitzArrayCxx_AsBlitz<uint16_t,3>(input),
           *PyBlitzArrayCxx_AsBlitz<uint16_t,3>(output)
           );
     case NPY_FLOAT64:
-      bob::ip::rgb_to_hsv(
+      bob::ip::rgb_to_hsl(
           *PyBlitzArrayCxx_AsBlitz<double,3>(input),
           *PyBlitzArrayCxx_AsBlitz<double,3>(output)
           );
@@ -57,7 +57,7 @@ static PyObject* PyBobIpColor_RgbToHsv_Array(PyObject* args, PyObject* kwds) {
 
 }
 
-static PyObject* PyBobIpColor_RgbToHsv_Scalar(PyObject* args, PyObject* kwds) {
+static PyObject* PyBobIpColor_RgbToHsl_Scalar(PyObject* args, PyObject* kwds) {
 
   static const char* const_kwlist[] = {"r", "g", "b", 0};
   static char** kwlist = const_cast<char**>(const_kwlist);
@@ -103,49 +103,49 @@ static PyObject* PyBobIpColor_RgbToHsv_Scalar(PyObject* args, PyObject* kwds) {
       {
         uint8_t h;
         uint8_t s;
-        uint8_t v;
-        bob::ip::rgb_to_hsv_one(
+        uint8_t l;
+        bob::ip::rgb_to_hsl_one(
             PyBlitzArrayCxx_AsCScalar<uint8_t>(r),
             PyBlitzArrayCxx_AsCScalar<uint8_t>(g),
             PyBlitzArrayCxx_AsCScalar<uint8_t>(b),
-            h, s, v
+            h, s, l
             );
         auto h_ = make_safe(PyBlitzArrayCxx_FromCScalar(h));
         auto s_ = make_safe(PyBlitzArrayCxx_FromCScalar(s));
-        auto v_ = make_safe(PyBlitzArrayCxx_FromCScalar(v));
-        return Py_BuildValue("(OOO)", h_.get(), s_.get(), v_.get());
+        auto l_ = make_safe(PyBlitzArrayCxx_FromCScalar(l));
+        return Py_BuildValue("(OOO)", h_.get(), s_.get(), l_.get());
       }
     case NPY_UINT16:
       {
         uint16_t h;
         uint16_t s;
-        uint16_t v;
-        bob::ip::rgb_to_hsv_one(
+        uint16_t l;
+        bob::ip::rgb_to_hsl_one(
             PyBlitzArrayCxx_AsCScalar<uint16_t>(r),
             PyBlitzArrayCxx_AsCScalar<uint16_t>(g),
             PyBlitzArrayCxx_AsCScalar<uint16_t>(b),
-            h, s, v
+            h, s, l
             );
         auto h_ = make_safe(PyBlitzArrayCxx_FromCScalar(h));
         auto s_ = make_safe(PyBlitzArrayCxx_FromCScalar(s));
-        auto v_ = make_safe(PyBlitzArrayCxx_FromCScalar(v));
-        return Py_BuildValue("(OOO)", h_.get(), s_.get(), v_.get());
+        auto l_ = make_safe(PyBlitzArrayCxx_FromCScalar(l));
+        return Py_BuildValue("(OOO)", h_.get(), s_.get(), l_.get());
       }
     case NPY_FLOAT64:
       {
         double h;
         double s;
-        double v;
-        bob::ip::rgb_to_hsv_one(
+        double l;
+        bob::ip::rgb_to_hsl_one(
             PyBlitzArrayCxx_AsCScalar<double>(r),
             PyBlitzArrayCxx_AsCScalar<double>(g),
             PyBlitzArrayCxx_AsCScalar<double>(b),
-            h, s, v
+            h, s, l
             );
         auto h_ = make_safe(PyBlitzArrayCxx_FromCScalar(h));
         auto s_ = make_safe(PyBlitzArrayCxx_FromCScalar(s));
-        auto v_ = make_safe(PyBlitzArrayCxx_FromCScalar(v));
-        return Py_BuildValue("(OOO)", h_.get(), s_.get(), v_.get());
+        auto l_ = make_safe(PyBlitzArrayCxx_FromCScalar(l));
+        return Py_BuildValue("(OOO)", h_.get(), s_.get(), l_.get());
       }
     default:
       PyErr_Format(PyExc_NotImplementedError, "function has no support for data type `%s', choose from uint8, uint16 or float64", PyBlitzArray_TypenumAsString(type_num));
@@ -154,7 +154,7 @@ static PyObject* PyBobIpColor_RgbToHsv_Scalar(PyObject* args, PyObject* kwds) {
   return 0;
 }
 
-PyObject* PyBobIpColor_RgbToHsv (PyObject*, PyObject* args, PyObject* kwds) {
+PyObject* PyBobIpColor_RgbToHsl (PyObject*, PyObject* args, PyObject* kwds) {
 
   Py_ssize_t nargs = (args?PyTuple_Size(args):0) + (kwds?PyDict_Size(kwds):0);
 
@@ -162,10 +162,10 @@ PyObject* PyBobIpColor_RgbToHsv (PyObject*, PyObject* args, PyObject* kwds) {
 
     case 1: //should pass an array
     case 2:
-      return PyBobIpColor_RgbToHsv_Array(args, kwds);
+      return PyBobIpColor_RgbToHsl_Array(args, kwds);
 
     case 3:
-      return PyBobIpColor_RgbToHsv_Scalar(args, kwds);
+      return PyBobIpColor_RgbToHsl_Scalar(args, kwds);
 
     default:
 
@@ -177,7 +177,7 @@ PyObject* PyBobIpColor_RgbToHsv (PyObject*, PyObject* args, PyObject* kwds) {
 
 }
 
-static PyObject* PyBobIpColor_HsvToRgb_Array(PyObject* args, PyObject* kwds) {
+static PyObject* PyBobIpColor_HslToRgb_Array(PyObject* args, PyObject* kwds) {
 
   static const char* const_kwlist[] = {"input", "output", 0};
   static char** kwlist = const_cast<char**>(const_kwlist);
@@ -200,17 +200,17 @@ static PyObject* PyBobIpColor_HsvToRgb_Array(PyObject* args, PyObject* kwds) {
 
   switch (input->type_num) {
     case NPY_UINT8:
-      bob::ip::hsv_to_rgb(
+      bob::ip::hsl_to_rgb(
           *PyBlitzArrayCxx_AsBlitz<uint8_t,3>(input),
           *PyBlitzArrayCxx_AsBlitz<uint8_t,3>(output)
           );
     case NPY_UINT16:
-      bob::ip::hsv_to_rgb(
+      bob::ip::hsl_to_rgb(
           *PyBlitzArrayCxx_AsBlitz<uint16_t,3>(input),
           *PyBlitzArrayCxx_AsBlitz<uint16_t,3>(output)
           );
     case NPY_FLOAT64:
-      bob::ip::hsv_to_rgb(
+      bob::ip::hsl_to_rgb(
           *PyBlitzArrayCxx_AsBlitz<double,3>(input),
           *PyBlitzArrayCxx_AsBlitz<double,3>(output)
           );
@@ -224,17 +224,17 @@ static PyObject* PyBobIpColor_HsvToRgb_Array(PyObject* args, PyObject* kwds) {
 
 }
 
-static PyObject* PyBobIpColor_HsvToRgb_Scalar(PyObject* args, PyObject* kwds) {
+static PyObject* PyBobIpColor_HslToRgb_Scalar(PyObject* args, PyObject* kwds) {
 
-  static const char* const_kwlist[] = {"h", "s", "v", 0};
+  static const char* const_kwlist[] = {"h", "s", "l", 0};
   static char** kwlist = const_cast<char**>(const_kwlist);
 
   PyObject* h = 0;
   PyObject* s = 0;
-  PyObject* v = 0;
+  PyObject* l = 0;
 
   if (!PyArg_ParseTupleAndKeywords(args, kwds, "OOO", kwlist,
-        &h, &s, &v)) return 0;
+        &h, &s, &l)) return 0;
 
   //checks all input objects are scalars
   if (!PyArray_IsAnyScalar(h)) {
@@ -247,8 +247,8 @@ static PyObject* PyBobIpColor_HsvToRgb_Scalar(PyObject* args, PyObject* kwds) {
     return 0;
   }
 
-  if (!PyArray_IsAnyScalar(v)) {
-    PyErr_Format(PyExc_TypeError, "input element `v' should be a python or numpy scalar, not `%s'", Py_TYPE(v)->tp_name);
+  if (!PyArray_IsAnyScalar(l)) {
+    PyErr_Format(PyExc_TypeError, "input element `l' should be a python or numpy scalar, not `%s'", Py_TYPE(l)->tp_name);
     return 0;
   }
 
@@ -258,8 +258,8 @@ static PyObject* PyBobIpColor_HsvToRgb_Scalar(PyObject* args, PyObject* kwds) {
     return 0;
   }
 
-  if (Py_TYPE(h) != Py_TYPE(v)) {
-    PyErr_Format(PyExc_TypeError, "input scalar type for `v' (`%s') differs from the type for element `h' and `s' (`%s')", Py_TYPE(v)->tp_name, Py_TYPE(h)->tp_name);
+  if (Py_TYPE(h) != Py_TYPE(l)) {
+    PyErr_Format(PyExc_TypeError, "input scalar type for `l' (`%s') differs from the type for element `h' and `s' (`%s')", Py_TYPE(l)->tp_name, Py_TYPE(h)->tp_name);
     return 0;
   }
 
@@ -270,10 +270,10 @@ static PyObject* PyBobIpColor_HsvToRgb_Scalar(PyObject* args, PyObject* kwds) {
     case NPY_UINT8:
       {
         uint8_t r, g, b;
-        bob::ip::hsv_to_rgb_one(
+        bob::ip::hsl_to_rgb_one(
             PyBlitzArrayCxx_AsCScalar<uint8_t>(h),
             PyBlitzArrayCxx_AsCScalar<uint8_t>(s),
-            PyBlitzArrayCxx_AsCScalar<uint8_t>(v),
+            PyBlitzArrayCxx_AsCScalar<uint8_t>(l),
             r, g, b);
         auto r_ = make_safe(PyBlitzArrayCxx_FromCScalar(r));
         auto g_ = make_safe(PyBlitzArrayCxx_FromCScalar(g));
@@ -283,10 +283,10 @@ static PyObject* PyBobIpColor_HsvToRgb_Scalar(PyObject* args, PyObject* kwds) {
     case NPY_UINT16:
       {
         uint16_t r, g, b;
-        bob::ip::hsv_to_rgb_one(
+        bob::ip::hsl_to_rgb_one(
             PyBlitzArrayCxx_AsCScalar<uint16_t>(h),
             PyBlitzArrayCxx_AsCScalar<uint16_t>(s),
-            PyBlitzArrayCxx_AsCScalar<uint16_t>(v),
+            PyBlitzArrayCxx_AsCScalar<uint16_t>(l),
             r, g, b);
         auto r_ = make_safe(PyBlitzArrayCxx_FromCScalar(r));
         auto g_ = make_safe(PyBlitzArrayCxx_FromCScalar(g));
@@ -296,10 +296,10 @@ static PyObject* PyBobIpColor_HsvToRgb_Scalar(PyObject* args, PyObject* kwds) {
     case NPY_FLOAT64:
       {
         double r, g, b;
-        bob::ip::hsv_to_rgb_one(
+        bob::ip::hsl_to_rgb_one(
             PyBlitzArrayCxx_AsCScalar<double>(h),
             PyBlitzArrayCxx_AsCScalar<double>(s),
-            PyBlitzArrayCxx_AsCScalar<double>(v),
+            PyBlitzArrayCxx_AsCScalar<double>(l),
             r, g, b);
         auto r_ = make_safe(PyBlitzArrayCxx_FromCScalar(r));
         auto g_ = make_safe(PyBlitzArrayCxx_FromCScalar(g));
@@ -313,7 +313,7 @@ static PyObject* PyBobIpColor_HsvToRgb_Scalar(PyObject* args, PyObject* kwds) {
   return 0;
 }
 
-PyObject* PyBobIpColor_HsvToRgb (PyObject*, PyObject* args, PyObject* kwds) {
+PyObject* PyBobIpColor_HslToRgb (PyObject*, PyObject* args, PyObject* kwds) {
 
   Py_ssize_t nargs = (args?PyTuple_Size(args):0) + (kwds?PyDict_Size(kwds):0);
 
@@ -321,10 +321,10 @@ PyObject* PyBobIpColor_HsvToRgb (PyObject*, PyObject* args, PyObject* kwds) {
 
     case 1: //should pass an array
     case 2:
-      return PyBobIpColor_HsvToRgb_Array(args, kwds);
+      return PyBobIpColor_HslToRgb_Array(args, kwds);
 
     case 3:
-      return PyBobIpColor_HsvToRgb_Scalar(args, kwds);
+      return PyBobIpColor_HslToRgb_Scalar(args, kwds);
 
     default:
 
