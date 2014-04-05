@@ -34,13 +34,13 @@ def test_hsv():
     for g in numpy.arange(0, 1+step, step):
       for b in numpy.arange(0, 1+step, step):
         # First test the correctness
-        ht, st, vt = rgb_to_hsv(r, g, b, dtype='float')
+        ht, st, vt = rgb_to_hsv(r, g, b)
         hp, sp, vp = colorsys.rgb_to_hsv(r, g, b)
         assert abs(ht - hp) < 1e-6
         assert abs(st - sp) < 1e-6
         assert abs(vt - vp) < 1e-6
         # And that we can invert the result using bob
-        r2, g2, b2 = hsv_to_rgb(ht, st, vt, dtype='float')
+        r2, g2, b2 = hsv_to_rgb(ht, st, vt)
         assert abs(r2 - r) < 1e-6
         assert abs(g2 - g) < 1e-6
         assert abs(b2 - b) < 1e-6
@@ -52,13 +52,13 @@ def test_hsv():
     for g in l:
       for b in l:
         # First test the correctness
-        ht, st, vt = rgb_to_hsv(r, g, b, dtype='float')
+        ht, st, vt = rgb_to_hsv(r, g, b)
         hp, sp, vp = colorsys.rgb_to_hsv(r, g, b)
         assert abs(ht - hp) < 1e-6
         assert abs(st - sp) < 1e-6
         assert abs(vt - vp) < 1e-6
         # And that we can invert the result using bob
-        r2, g2, b2 = hsv_to_rgb(ht, st, vt, dtype='float')
+        r2, g2, b2 = hsv_to_rgb(ht, st, vt)
         assert abs(r2 - r) < 1e-6
         assert abs(g2 - g) < 1e-6
         assert abs(b2 - b) < 1e-6
@@ -143,12 +143,27 @@ def test_int_conversions():
   # uint8_t  | (3) 1.18%  | (4) 1.57%  | (1) 0.39%
   # uint16_t | (3) 0.005% | (4) 0.006% | (1) 0.006%
 
+  u8 = numpy.uint8
+  mx = 2
+  for r in list(range(0,5)) + list(range(120,130)) + list(range(253,256)):
+    for g in list(range(0,6)) + list(range(125,135)) + list(range(252,256)):
+      for b in list(range(0,7)) + list(range(127,137)) + list(range(252,256)):
+        yt, ut, vt = rgb_to_yuv(u8(r), u8(g), u8(b))
+        r2, g2, b2 = yuv_to_rgb(u8(yt), u8(ut), u8(vt))
+        #mx2 = max(abs(r2-r), abs(g2-g), abs(b2-b))
+        #correct within a 2% margin
+        #if mx2 > mx and (mx2/255.) < 0.02: mx = mx2
+        assert abs(r2 - r) <= mx
+        assert abs(g2 - g) <= mx
+        assert abs(b2 - b) <= mx
+  #print("uint8_t RGB/YCbCr/RGB error: %d (%.2f%%)" % (mx, 100*mx/255.))
+
   mx = 4
   for r in list(range(0,5)) + list(range(120,130)) + list(range(253,256)):
     for g in list(range(0,6)) + list(range(125,135)) + list(range(252,256)):
       for b in list(range(0,7)) + list(range(127,137)) + list(range(252,256)):
-        ht, st, vt = rgb_to_hsv(r, g, b, dtype='uint8')
-        r2, g2, b2 = hsv_to_rgb(ht, st, vt, dtype='uint8')
+        ht, st, vt = rgb_to_hsv(u8(r), u8(g), u8(b))
+        r2, g2, b2 = hsv_to_rgb(u8(ht), u8(st), u8(vt))
         #mx2 = max(abs(r2-r), abs(g2-g), abs(b2-b))
         #correct within a 2% margin
         #if mx2 > mx and (mx2/255.) < 0.02: mx = mx2
@@ -161,8 +176,8 @@ def test_int_conversions():
   for r in list(range(0,5)) + list(range(120,130)) + list(range(253,256)):
     for g in list(range(0,6)) + list(range(125,135)) + list(range(252,256)):
       for b in list(range(0,7)) + list(range(127,137)) + list(range(252,256)):
-        ht, st, lt = rgb_to_hsl(r, g, b, dtype='uint8')
-        r2, g2, b2 = hsl_to_rgb(ht, st, lt, dtype='uint8')
+        ht, st, lt = rgb_to_hsl(u8(r), u8(g), u8(b))
+        r2, g2, b2 = hsl_to_rgb(u8(ht), u8(st), u8(lt))
         #mx2 = max(abs(r2-r), abs(g2-g), abs(b2-b))
         #correct within a 2% margin
         #if mx2 > mx and (mx2/255.) < 0.02: mx = mx2
@@ -171,27 +186,27 @@ def test_int_conversions():
         assert abs(b2 - b) <= mx
   #print("uint8_t RGB/HSL/RGB error: %d (%.2f%%)" % (mx, 100*mx/255.))
 
-  mx = 2
-  for r in list(range(0,5)) + list(range(120,130)) + list(range(253,256)):
-    for g in list(range(0,6)) + list(range(125,135)) + list(range(252,256)):
-      for b in list(range(0,7)) + list(range(127,137)) + list(range(252,256)):
-        yt, ut, vt = rgb_to_yuv(r, g, b, dtype='uint8')
-        r2, g2, b2 = yuv_to_rgb(yt, ut, vt, dtype='uint8')
+  # Just test a subrange or the test will take too long
+  u16 = numpy.uint16
+  mx = 4
+  for r in list(range(0,10)) + list(range(120,130)) + list(range(250,256)):
+    for g in list(range(5,12)) + list(range(125,135)) + list(range(240,252)):
+      for b in list(range(7,15)) + list(range(127,137)) + list(range(235,251)):
+        yt, ut, vt = rgb_to_yuv(u16(r), u16(g), u16(b))
+        r2, g2, b2 = yuv_to_rgb(u16(yt), u16(ut), u16(vt))
         #mx2 = max(abs(r2-r), abs(g2-g), abs(b2-b))
-        #correct within a 2% margin
-        #if mx2 > mx and (mx2/255.) < 0.02: mx = mx2
+        #if mx2 > mx and (mx2/65535.) < 0.0001: mx = mx2
         assert abs(r2 - r) <= mx
         assert abs(g2 - g) <= mx
         assert abs(b2 - b) <= mx
-  #print("uint8_t RGB/YCbCr/RGB error: %d (%.2f%%)" % (mx, 100*mx/255.))
+  #print("16-bit unsigned integer RGB/YCbCr/RGB error: %d (%.4f%%)" % (mx, 100*mx/65535.))
 
-  # Just test a subrange or the test will take too long
   mx = 3
   for r in list(range(0,5)) + list(range(30000,30005)) + list(range(65530,65536)):
     for g in list(range(0,6)) + list(range(30002,3007)) + list(range(65525,65532)):
       for b in list(range(0,7)) + list(range(3003,3008)) + list(range(65524,65531)):
-        ht, st, vt = rgb_to_hsv(r, g, b, dtype='uint16')
-        r2, g2, b2 = hsv_to_rgb(ht, st, vt, dtype='uint16')
+        ht, st, vt = rgb_to_hsv(u16(r), u16(g), u16(b))
+        r2, g2, b2 = hsv_to_rgb(u16(ht), u16(st), u16(vt))
         #mx2 = max(abs(r2-r), abs(g2-g), abs(b2-b))
         #if mx2 > mx and (mx2/65535.) < 0.0001: mx = mx2
         assert abs(r2 - r) <= mx
@@ -211,19 +226,6 @@ def test_int_conversions():
         assert abs(g2 - g) <= mx
         assert abs(b2 - b) <= mx
   #print("16-bit unsigned integer RGB/HSL/RGB error: %d (%.4f%%)" % (mx, 100*mx/65535.))
-
-  mx = 4
-  for r in list(range(0,10)) + list(range(120,130)) + list(range(250,256)):
-    for g in list(range(5,12)) + list(range(125,135)) + list(range(240,252)):
-      for b in list(range(7,15)) + list(range(127,137)) + list(range(235,251)):
-        yt, ut, vt = rgb_to_yuv(r, g, b, dtype='uint16')
-        r2, g2, b2 = yuv_to_rgb(yt, ut, vt, dtype='uint16')
-        #mx2 = max(abs(r2-r), abs(g2-g), abs(b2-b))
-        #if mx2 > mx and (mx2/65535.) < 0.0001: mx = mx2
-        assert abs(r2 - r) <= mx
-        assert abs(g2 - g) <= mx
-        assert abs(b2 - b) <= mx
-  #print("16-bit unsigned integer RGB/YCbCr/RGB error: %d (%.4f%%)" % (mx, 100*mx/65535.))
 
 def test_gray_halves():
 

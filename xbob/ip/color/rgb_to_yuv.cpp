@@ -259,7 +259,7 @@ static PyObject* PyBobIpColor_YuvToRgb_Scalar(PyObject* args, PyObject* kwds) {
   }
 
   if (Py_TYPE(y) != Py_TYPE(v)) {
-    PyErr_Format(PyExc_TypeError, "input scalar type for `v' (`%s') differs from the type for element `y' and `u' (`%s')", Py_TYPE(y)->tp_name, Py_TYPE(v)->tp_name);
+    PyErr_Format(PyExc_TypeError, "input scalar type for `v' (`%s') differs from the type for element `y' and `u' (`%s')", Py_TYPE(v)->tp_name, Py_TYPE(y)->tp_name);
     return 0;
   }
 

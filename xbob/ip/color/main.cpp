@@ -247,6 +247,122 @@ static xbob::extension::FunctionDoc s_yuv_to_rgb = xbob::extension::FunctionDoc(
     .add_return("r, g, b", "scalar (uint8|uint16|float64)", "Three scalars are returned when this function is fed discrete YUV values. The types matche the input pixel values")
 ;
 
+extern PyObject* PyBobIpColor_RgbToHsv (PyObject*, PyObject*, PyObject*);
+static xbob::extension::FunctionDoc s_rgb_to_hsv = xbob::extension::FunctionDoc(
+    "rgb_to_hsv",
+
+    "Converts an RGB color-coded pixel or a full array (image) to HSV",
+
+    "This function converts an RGB color-coded pixel or a full RGB array to "
+    "HSV (http://en.wikipedia.org/wiki/HSL_and_HSV).\n"
+    "\n"
+    "The input is expected to be either an array or scalars. If you input an "
+    "array, it is expected to assume the shape ``(3, height, width)``, "
+    "representing an image encoded in RGB, in this order, with the specified "
+    "``height`` and ``width``. The output array may be optionally provided. "
+    "In such a case, it should be a 3D array with the same dimensions "
+    "as the input, and have have the same data type. If an output "
+    "array is not provided, one will be allocated internally. In any case, "
+    "the output array is always returned.\n"
+    "\n"
+    "If the input is of scalar type, this method will return the HSV "
+    "version for a pixel with the 3 discrete values for H, S and V. "
+    "The input in this case should consist of 3 scalars defining the "
+    "discrete values of R, G and B.\n"
+    "\n"
+    ".. note::\n"
+    "\n"
+    "   If you provide python scalars, then you should provide 3 values that "
+    "share the same scalar type. Type mixing will raise a "
+    ":py:class:`TypeError` exception.\n"
+    "\n"
+    ".. note::\n"
+    "\n"
+    "   This method only supports arrays and scalars of the following data "
+    "types:\n"
+    "\n"
+    "   * :py:class:`numpy.uint8`\n"
+    "   * :py:class:`numpy.uint16`\n"
+    "   * :py:class:`numpy.float64` (or the native python ``float``)\n"
+    "   \n"
+    "   To create an object with a scalar type that will be accepted by this "
+    "   method, use a construction like the following:\n"
+    "   \n"
+    "   .. code-block:: python\n"
+    "      \n"
+    "      >> import numpy\n"
+    "      >> r = numpy.uint8(32)\n"
+    "\n"
+    )
+
+    .add_prototype("input, output", "output")
+    .add_parameter("input", "array_like (uint8|uint16|float64, 3D)", "Input array containing an image with the shape ``(3, height, width)``")
+    .add_parameter("output", "array (uint8|uint16|float64, 2D), optional", "Output array - if provided, should have matching data type to ``input``. The shape should match the ``input`` shape")
+    .add_return("output", "array (uint8|uint16|float64, 2D)", "The ``output`` array is returned by the function. If one was not provided, a new one is allocated internally")
+
+    .add_prototype("r, g, b", "h, s, v")
+    .add_parameter("r, g, b", "scalar (uint8|uint16|float64)", "Discrete pixel values for the red, green and blue channels")
+    .add_return("h, s, v", "scalar (uint8|uint16|float64)", "Three scalars are returned when this function is fed discrete RGB values. The types matche the input pixel values")
+;
+
+extern PyObject* PyBobIpColor_HsvToRgb (PyObject*, PyObject*, PyObject*);
+static xbob::extension::FunctionDoc s_hsv_to_rgb = xbob::extension::FunctionDoc(
+    "hsv_to_rgb",
+
+    "Converts an HSV color-coded pixel or a full array (image) to RGB",
+
+    "This function converts an HSV array or color-coded pixel "
+    "(http://en.wikipedia.org/wiki/HSL_and_HSV) to RGB.\n"
+    "\n"
+    "The input is expected to be either an array or scalars. If you input an "
+    "array, it is expected to assume the shape ``(3, height, width)``, "
+    "representing an image encoded in HSV, in this order, with the specified "
+    "``height`` and ``width``. The output array may be optionally provided. "
+    "In such a case, it should be a 3D array with the same dimensions "
+    "as the input, and have have the same data type. If an output "
+    "array is not provided, one will be allocated internally. In any case, "
+    "the output array is always returned.\n"
+    "\n"
+    "If the input is of scalar type, this method will return the HSV "
+    "version for a pixel with the 3 discrete values for red, green and blue. "
+    "The input in this case should consist of 3 scalars defining the "
+    "discrete values of H, S and V.\n"
+    "\n"
+    ".. note::\n"
+    "\n"
+    "   If you provide python scalars, then you should provide 3 values that "
+    "share the same scalar type. Type mixing will raise a "
+    ":py:class:`TypeError` exception.\n"
+    "\n"
+    ".. note::\n"
+    "\n"
+    "   This method only supports arrays and scalars of the following data "
+    "types:\n"
+    "\n"
+    "   * :py:class:`numpy.uint8`\n"
+    "   * :py:class:`numpy.uint16`\n"
+    "   * :py:class:`numpy.float64` (or the native python ``float``)\n"
+    "   \n"
+    "   To create an object with a scalar type that will be accepted by this "
+    "   method, use a construction like the following:\n"
+    "   \n"
+    "   .. code-block:: python\n"
+    "      \n"
+    "      >> import numpy\n"
+    "      >> r = numpy.uint8(32)\n"
+    "\n"
+    )
+
+    .add_prototype("input, output", "output")
+    .add_parameter("input", "array_like (uint8|uint16|float64, 3D)", "Input array containing an image with the shape ``(3, height, width)``")
+    .add_parameter("output", "array (uint8|uint16|float64, 2D), optional", "Output array - if provided, should have matching data type to ``input``. The shape should match the ``input`` shape")
+    .add_return("output", "array (uint8|uint16|float64, 2D)", "The ``output`` array is returned by the function. If one was not provided, a new one is allocated internally")
+
+    .add_prototype("h, s, v", "r, g, b")
+    .add_parameter("h, s, v", "scalar (uint8|uint16|float64)", "Discrete pixel values for H, S and V  channels")
+    .add_return("r, g, b", "scalar (uint8|uint16|float64)", "Three scalars are returned when this function is fed discrete HSV values. The types matche the input pixel values")
+;
+
 static PyMethodDef module_methods[] = {
     {
       s_rgb_to_gray.name(),
@@ -271,6 +387,18 @@ static PyMethodDef module_methods[] = {
       (PyCFunction)PyBobIpColor_YuvToRgb,
       METH_VARARGS|METH_KEYWORDS,
       s_yuv_to_rgb.doc()
+    },
+    {
+      s_rgb_to_hsv.name(),
+      (PyCFunction)PyBobIpColor_RgbToHsv,
+      METH_VARARGS|METH_KEYWORDS,
+      s_rgb_to_hsv.doc()
+    },
+    {
+      s_hsv_to_rgb.name(),
+      (PyCFunction)PyBobIpColor_HsvToRgb,
+      METH_VARARGS|METH_KEYWORDS,
+      s_hsv_to_rgb.doc()
     },
     {0}  /* Sentinel */
 };
