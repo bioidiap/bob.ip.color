@@ -115,9 +115,9 @@ def test_yuv():
     for g in numpy.arange(0, 1+step, step):
       for b in numpy.arange(0, 1+step, step):
         # First test the correctness
-        yt, ut, vt = rgb_to_yuv(r, g, b, dtype='float')
+        yt, ut, vt = rgb_to_yuv(r, g, b)
         # And that we can invert the result using bob
-        r2, g2, b2 = yuv_to_rgb(yt, ut, vt, dtype='float')
+        r2, g2, b2 = yuv_to_rgb(yt, ut, vt)
         assert abs(r2 - r) < 1e-4
         assert abs(g2 - g) < 1e-4
         assert abs(b2 - b) < 1e-4

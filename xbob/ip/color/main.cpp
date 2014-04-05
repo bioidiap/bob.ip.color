@@ -19,13 +19,13 @@ static xbob::extension::FunctionDoc s_rgb_to_gray = xbob::extension::FunctionDoc
     "Converts an RGB color-coded pixel or a full array (image) to grayscale",
 
     "This function converts an RGB color-coded pixel or a full RGB array to "
-    "grayscale using the CCIR 601 (Kb = 0.114, Kr = 0.299) norm as discussed "
-    "`on this website <http://www.fourcc.org/fccyvrgb.php>`_. It returns only "
-    "the gray value (Y component) in the desired data format. This method is "
-    "more efficient than calling rgb_to_yuv() method just to extract the Y "
+    "grayscale using the CCIR 601 (Kb = 0.114, Kr = 0.299) norm "
+    "(http://www.fourcc.org/fccyvrgb.php). It returns only the gray value "
+    "(Y component) in the desired data format. This method is more efficient "
+    "than calling :py:func:`rgb_to_yuv` method just to extract the Y "
     "component.\n"
     "\n"
-    "The input is expected to be either an array or a scalar. If you input an "
+    "The input is expected to be either an array or scalars. If you input an "
     "array, it is expected to assume the shape ``(3, height, width)``, "
     "representing an image encoded in RGB, in this order, with the specified "
     "``height`` and ``width``; or a set of 3 scalars defining the input R, G "
@@ -37,7 +37,6 @@ static xbob::extension::FunctionDoc s_rgb_to_gray = xbob::extension::FunctionDoc
     "\n"
     "If the input is of scalar type, this method will return the gray-scaled "
     "version for a pixel with the 3 discrete values for red, green and blue. "
-    "\n"
     "\n"
     ".. note::\n"
     "\n"
@@ -63,12 +62,14 @@ static xbob::extension::FunctionDoc s_rgb_to_gray = xbob::extension::FunctionDoc
     "      >> r = numpy.uint8(32)\n"
     "\n"
     )
-    .add_prototype("input, output", "array")
-    .add_prototype("r, g, b", "y")
+
+    .add_prototype("input, output", "output")
     .add_parameter("input", "array_like (uint8|uint16|float64, 3D)", "Input array containing an image with the shape ``(3, height, width)``")
     .add_parameter("output", "array (uint8|uint16|float64, 2D), optional", "Output array - if provided, should have matching data type to ``input``. The shape should be ``(height, width)``")
+    .add_return("output", "array_like (uint8|uint16|float64, 2D)", "The ``output`` array is returned by the function. If one was not provided, a new one is allocated internally")
+
+    .add_prototype("r, g, b", "y")
     .add_parameter("r, g, b", "scalar (uint8|uint16|float64)", "Discrete pixel values for the red, green and blue channels")
-    .add_return("array", "array_like (uint8|uint16|float64, 2D)", "The ``output`` array is returned by the function. If one was not provided, a new one is allocated internally")
     .add_return("y", "scalar (uint8|uint16|float64)", "A scalar is returned when this function is fed discrete RGB values. The type matches the input pixel values")
 ;
 
@@ -117,13 +118,133 @@ static xbob::extension::FunctionDoc s_gray_to_rgb = xbob::extension::FunctionDoc
     "      >> y = numpy.uint8(32)\n"
     "\n"
     )
-    .add_prototype("input, output", "array")
-    .add_prototype("y", "r, g, b")
+
+    .add_prototype("input, output", "output")
     .add_parameter("input", "array_like (uint8|uint16|float64, 2D)", "Input array containing an image with the shape ``(height, width)``")
     .add_parameter("output", "array (uint8|uint16|float64, 3D), optional", "Output array - if provided, should have matching data type to ``input``. The shape should be ``(3, height, width)``")
+    .add_return("output", "array (uint8|uint16|float64, 3D)", "The ``output`` array is returned by the function. If one was not provided, a new one is allocated internally")
+
+    .add_prototype("y", "r, g, b")
     .add_parameter("y", "scalar (uint8|uint16|float64)", "The gray-scale pixel scalar you wish to convert into an RGB tuple")
-    .add_return("array", "array (uint8|uint16|float64, 3D)", "The ``output`` array is returned by the function. If one was not provided, a new one is allocated internally")
     .add_return("r, g, b", "scalar (uint8|uint16|float64)", "Discrete pixel values for the red, green and blue channels")
+;
+
+extern PyObject* PyBobIpColor_RgbToYuv (PyObject*, PyObject*, PyObject*);
+static xbob::extension::FunctionDoc s_rgb_to_yuv = xbob::extension::FunctionDoc(
+    "rgb_to_yuv",
+
+    "Converts an RGB color-coded pixel or a full array (image) to YUV",
+
+    "This function converts an RGB color-coded pixel or a full RGB array to "
+    "YUV (Y'CbCr) using the CCIR 601 (Kb = 0.114, Kr = 0.299) norm "
+    "(http://www.fourcc.org/fccyvrgb.php).\n"
+    "\n"
+    "The input is expected to be either an array or scalars. If you input an "
+    "array, it is expected to assume the shape ``(3, height, width)``, "
+    "representing an image encoded in RGB, in this order, with the specified "
+    "``height`` and ``width``. The output array may be optionally provided. "
+    "In such a case, it should be a 3D array with the same dimensions "
+    "as the input, and have have the same data type. If an output "
+    "array is not provided, one will be allocated internally. In any case, "
+    "the output array is always returned.\n"
+    "\n"
+    "If the input is of scalar type, this method will return the YUV "
+    "version for a pixel with the 3 discrete values for Y, U (Cb) and V (Cr). "
+    "The input in this case should consist of 3 scalars defining the "
+    "discrete values of R, G and B.\n"
+    "\n"
+    ".. note::\n"
+    "\n"
+    "   If you provide python scalars, then you should provide 3 values that "
+    "share the same scalar type. Type mixing will raise a "
+    ":py:class:`TypeError` exception.\n"
+    "\n"
+    ".. note::\n"
+    "\n"
+    "   This method only supports arrays and scalars of the following data "
+    "types:\n"
+    "\n"
+    "   * :py:class:`numpy.uint8`\n"
+    "   * :py:class:`numpy.uint16`\n"
+    "   * :py:class:`numpy.float64` (or the native python ``float``)\n"
+    "   \n"
+    "   To create an object with a scalar type that will be accepted by this "
+    "   method, use a construction like the following:\n"
+    "   \n"
+    "   .. code-block:: python\n"
+    "      \n"
+    "      >> import numpy\n"
+    "      >> r = numpy.uint8(32)\n"
+    "\n"
+    )
+
+    .add_prototype("input, output", "output")
+    .add_parameter("input", "array_like (uint8|uint16|float64, 3D)", "Input array containing an image with the shape ``(3, height, width)``")
+    .add_parameter("output", "array (uint8|uint16|float64, 2D), optional", "Output array - if provided, should have matching data type to ``input``. The shape should match the ``input`` shape")
+    .add_return("output", "array (uint8|uint16|float64, 2D)", "The ``output`` array is returned by the function. If one was not provided, a new one is allocated internally")
+
+    .add_prototype("r, g, b", "y, u, v")
+    .add_parameter("r, g, b", "scalar (uint8|uint16|float64)", "Discrete pixel values for the red, green and blue channels")
+    .add_return("y, u, v", "scalar (uint8|uint16|float64)", "Three scalars are returned when this function is fed discrete RGB values. The types matche the input pixel values")
+;
+
+extern PyObject* PyBobIpColor_YuvToRgb (PyObject*, PyObject*, PyObject*);
+static xbob::extension::FunctionDoc s_yuv_to_rgb = xbob::extension::FunctionDoc(
+    "yuv_to_rgb",
+
+    "Converts an YUV color-coded pixel or a full array (image) to RGB",
+
+    "This function converts an YUV (Y'CbCr) array or color-coded pixel using "
+    "the CCIR 601 (Kb = 0.114, Kr = 0.299) norm "
+    "(http://www.fourcc.org/fccyvrgb.php) to RGB.\n"
+    "\n"
+    "The input is expected to be either an array or scalars. If you input an "
+    "array, it is expected to assume the shape ``(3, height, width)``, "
+    "representing an image encoded in YUV, in this order, with the specified "
+    "``height`` and ``width``. The output array may be optionally provided. "
+    "In such a case, it should be a 3D array with the same dimensions "
+    "as the input, and have have the same data type. If an output "
+    "array is not provided, one will be allocated internally. In any case, "
+    "the output array is always returned.\n"
+    "\n"
+    "If the input is of scalar type, this method will return the YUV "
+    "version for a pixel with the 3 discrete values for red, green and blue. "
+    "The input in this case should consist of 3 scalars defining the "
+    "discrete values of Y, U and V.\n"
+    "\n"
+    ".. note::\n"
+    "\n"
+    "   If you provide python scalars, then you should provide 3 values that "
+    "share the same scalar type. Type mixing will raise a "
+    ":py:class:`TypeError` exception.\n"
+    "\n"
+    ".. note::\n"
+    "\n"
+    "   This method only supports arrays and scalars of the following data "
+    "types:\n"
+    "\n"
+    "   * :py:class:`numpy.uint8`\n"
+    "   * :py:class:`numpy.uint16`\n"
+    "   * :py:class:`numpy.float64` (or the native python ``float``)\n"
+    "   \n"
+    "   To create an object with a scalar type that will be accepted by this "
+    "   method, use a construction like the following:\n"
+    "   \n"
+    "   .. code-block:: python\n"
+    "      \n"
+    "      >> import numpy\n"
+    "      >> r = numpy.uint8(32)\n"
+    "\n"
+    )
+
+    .add_prototype("input, output", "output")
+    .add_parameter("input", "array_like (uint8|uint16|float64, 3D)", "Input array containing an image with the shape ``(3, height, width)``")
+    .add_parameter("output", "array (uint8|uint16|float64, 2D), optional", "Output array - if provided, should have matching data type to ``input``. The shape should match the ``input`` shape")
+    .add_return("output", "array (uint8|uint16|float64, 2D)", "The ``output`` array is returned by the function. If one was not provided, a new one is allocated internally")
+
+    .add_prototype("y, u, v", "r, g, b")
+    .add_parameter("y, u, v", "scalar (uint8|uint16|float64)", "Discrete pixel values for Y, U (Cb) and V (Cr) channels")
+    .add_return("r, g, b", "scalar (uint8|uint16|float64)", "Three scalars are returned when this function is fed discrete YUV values. The types matche the input pixel values")
 ;
 
 static PyMethodDef module_methods[] = {
@@ -138,6 +259,18 @@ static PyMethodDef module_methods[] = {
       (PyCFunction)PyBobIpColor_GrayToRgb,
       METH_VARARGS|METH_KEYWORDS,
       s_gray_to_rgb.doc()
+    },
+    {
+      s_rgb_to_yuv.name(),
+      (PyCFunction)PyBobIpColor_RgbToYuv,
+      METH_VARARGS|METH_KEYWORDS,
+      s_rgb_to_yuv.doc()
+    },
+    {
+      s_yuv_to_rgb.name(),
+      (PyCFunction)PyBobIpColor_YuvToRgb,
+      METH_VARARGS|METH_KEYWORDS,
+      s_yuv_to_rgb.doc()
     },
     {0}  /* Sentinel */
 };

@@ -48,6 +48,7 @@ setup(
         [
           "xbob/ip/color/utils.cpp",
           "xbob/ip/color/rgb_to_gray.cpp",
+          "xbob/ip/color/rgb_to_yuv.cpp",
           "xbob/ip/color/main.cpp",
           ],
         packages = packages,
