@@ -22,6 +22,26 @@ def F(f):
   """Returns the test file on the "data" subdirectory"""
   return pkg_resources.resource_filename(__name__, os.path.join('data', f))
 
+@nose.tools.raises(NotImplementedError)
+def test_int_raises():
+
+  r = rgb_to_yuv(3, 4, 5)
+
+@nose.tools.raises(NotImplementedError)
+def test_int_raises_gray():
+
+  r = rgb_to_gray(3, 4, 5)
+
+@nose.tools.raises(NotImplementedError)
+def test_string_raises():
+
+  r = rgb_to_hsl("3", "4", "5")
+
+@nose.tools.raises(NotImplementedError)
+def test_string_raises_gray():
+
+  r = rgb_to_gray("3", "4", "5")
+
 def test_hsv():
 
   # This test verifies that color conversion is reversible for HSV <=> RGB

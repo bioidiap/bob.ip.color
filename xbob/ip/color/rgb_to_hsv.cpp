@@ -126,7 +126,7 @@ static PyObject* PyBobIpColor_RgbToHsv_Scalar(PyObject* args, PyObject* kwds) {
       }
 
     default:
-      PyErr_Format(PyExc_NotImplementedError, "function has no support for data type `%s', choose from uint8, uint16 or float64", PyBlitzArray_TypenumAsString(type_num));
+      PyErr_Format(PyExc_NotImplementedError, "function has no support for data type `%s', choose from uint8, uint16 or float64", Py_TYPE(r)->tp_name);
   }
 
   return 0;
@@ -263,7 +263,7 @@ static PyObject* PyBobIpColor_HsvToRgb_Scalar(PyObject* args, PyObject* kwds) {
       }
 
     default:
-      PyErr_Format(PyExc_NotImplementedError, "function has no support for data type `%s', choose from uint8, uint16 or float64", PyBlitzArray_TypenumAsString(type_num));
+      PyErr_Format(PyExc_NotImplementedError, "function has no support for data type `%s', choose from uint8, uint16 or float64", Py_TYPE(h)->tp_name);
   }
 
   return 0;

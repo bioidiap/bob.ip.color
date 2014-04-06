@@ -111,7 +111,7 @@ static PyObject* PyBobIpColor_RgbToGray_Scalar(PyObject* args, PyObject* kwds) {
       }
 
     default:
-      PyErr_Format(PyExc_NotImplementedError, "function has no support for data type `%s', choose from uint8, uint16 or float64", PyBlitzArray_TypenumAsString(type_num));
+      PyErr_Format(PyExc_NotImplementedError, "function has no support for data type `%s', choose from uint8, uint16 or float64", Py_TYPE(r)->tp_name);
   }
 
   return 0;
@@ -229,7 +229,7 @@ static PyObject* PyBobIpColor_GrayToRgb_Scalar(PyObject* args, PyObject* kwds) {
         return Py_BuildValue("(OOO)", r_.get(), g_.get(), b_.get());
       }
     default:
-      PyErr_Format(PyExc_NotImplementedError, "function has no support for data type `%s', choose from uint8, uint16 or float64", PyBlitzArray_TypenumAsString(type_num));
+      PyErr_Format(PyExc_NotImplementedError, "function has no support for data type `%s', choose from uint8, uint16 or float64", Py_TYPE(y)->tp_name);
   }
 
   return 0;
