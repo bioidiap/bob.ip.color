@@ -153,3 +153,52 @@ int check_and_allocate(Py_ssize_t input_dims, Py_ssize_t output_dims,
   return 1;
 
 }
+
+int check_scalar(const char* s, PyObject* v) {
+
+  if (!PyArray_IsAnyScalar(v)) {
+    PyErr_Format(PyExc_TypeError, "input element `%s' should be a python or numpy scalar, not `%s'", s, Py_TYPE(v)->tp_name);
+    return NPY_NOTYPE;
+  }
+
+  return PyArray_ObjectType(v, NPY_NOTYPE);
+
+}
+
+int check_scalars(
+    const char* s1, PyObject* v1,
+    const char* s2, PyObject* v2,
+    const char* s3, PyObject* v3
+    ) {
+
+  //checks all input objects are scalars
+  if (!PyArray_IsAnyScalar(v1)) {
+    PyErr_Format(PyExc_TypeError, "input element `%s' should be a python or numpy scalar, not `%s'", s1, Py_TYPE(v1)->tp_name);
+    return NPY_NOTYPE;
+  }
+
+  if (!PyArray_IsAnyScalar(v2)) {
+    PyErr_Format(PyExc_TypeError, "input element `%s' should be a python or numpy scalar, not `%s'", s2, Py_TYPE(v2)->tp_name);
+    return NPY_NOTYPE;
+  }
+
+  if (!PyArray_IsAnyScalar(v3)) {
+    PyErr_Format(PyExc_TypeError, "input element `%s' should be a python or numpy scalar, not `%s'", s3, Py_TYPE(v3)->tp_name);
+    return NPY_NOTYPE;
+  }
+
+  //checks all scalars are of the same type
+  if (Py_TYPE(v1) != Py_TYPE(v2)) {
+    PyErr_Format(PyExc_TypeError, "input scalar type for `%s' (`%s') differs from the type for element `%s' (`%s')", s1, Py_TYPE(v1)->tp_name, s2, Py_TYPE(v2)->tp_name);
+    return NPY_NOTYPE;
+  }
+
+  if (Py_TYPE(v1) != Py_TYPE(v3)) {
+    PyErr_Format(PyExc_TypeError, "input scalar type for `%s' (`%s') differs from the type for element `%s' and `%s' (`%s')", s3, Py_TYPE(v3)->tp_name, s1, s2, Py_TYPE(v1)->tp_name);
+    return NPY_NOTYPE;
+  }
+
+  //checks the type for one of the channels, cast all
+  return PyArray_ObjectType(v1, NPY_NOTYPE);
+
+}

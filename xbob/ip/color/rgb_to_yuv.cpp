@@ -66,87 +66,57 @@ static PyObject* PyBobIpColor_RgbToYuv_Scalar(PyObject* args, PyObject* kwds) {
   PyObject* g = 0;
   PyObject* b = 0;
 
-  if (!PyArg_ParseTupleAndKeywords(args, kwds, "OOO", kwlist, &r, &g, &b)) return 0;
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "OOO", kwlist,
+        &r, &g, &b)) return 0;
 
-  //checks all input objects are scalars
-  if (!PyArray_IsAnyScalar(r)) {
-    PyErr_Format(PyExc_TypeError, "input element `r' should be a python or numpy scalar, not `%s'", Py_TYPE(r)->tp_name);
-    return 0;
-  }
+  int type_num = check_scalars("r", r, "g", g, "b", b);
 
-  if (!PyArray_IsAnyScalar(g)) {
-    PyErr_Format(PyExc_TypeError, "input element `g' should be a python or numpy scalar, not `%s'", Py_TYPE(g)->tp_name);
-    return 0;
-  }
-
-  if (!PyArray_IsAnyScalar(b)) {
-    PyErr_Format(PyExc_TypeError, "input element `b' should be a python or numpy scalar, not `%s'", Py_TYPE(b)->tp_name);
-    return 0;
-  }
-
-  //checks all scalars are of the same type
-  if (Py_TYPE(r) != Py_TYPE(g)) {
-    PyErr_Format(PyExc_TypeError, "input scalar type for `g' (`%s') differs from the type for element `r' (`%s')", Py_TYPE(g)->tp_name, Py_TYPE(r)->tp_name);
-    return 0;
-  }
-
-  if (Py_TYPE(r) != Py_TYPE(b)) {
-    PyErr_Format(PyExc_TypeError, "input scalar type for `b' (`%s') differs from the type for element `r' and `g' (`%s')", Py_TYPE(b)->tp_name, Py_TYPE(r)->tp_name);
-    return 0;
-  }
-
-  //checks the type for one of the channels, cast all
-  int type_num = PyArray_ObjectType(r, NPY_NOTYPE);
+  if (type_num == NPY_NOTYPE && PyErr_Occurred()) return 0;
 
   switch (type_num) {
+
     case NPY_UINT8:
       {
-        uint8_t y;
-        uint8_t u;
-        uint8_t v;
+        uint8_t y, u, v;
         bob::ip::rgb_to_yuv_one(
             PyBlitzArrayCxx_AsCScalar<uint8_t>(r),
             PyBlitzArrayCxx_AsCScalar<uint8_t>(g),
             PyBlitzArrayCxx_AsCScalar<uint8_t>(b),
-            y, u, v
-            );
+            y, u, v);
         auto y_ = make_safe(PyBlitzArrayCxx_FromCScalar(y));
         auto u_ = make_safe(PyBlitzArrayCxx_FromCScalar(u));
         auto v_ = make_safe(PyBlitzArrayCxx_FromCScalar(v));
         return Py_BuildValue("(OOO)", y_.get(), u_.get(), v_.get());
       }
+
     case NPY_UINT16:
       {
-        uint16_t y;
-        uint16_t u;
-        uint16_t v;
+        uint16_t y, u, v;
         bob::ip::rgb_to_yuv_one(
             PyBlitzArrayCxx_AsCScalar<uint16_t>(r),
             PyBlitzArrayCxx_AsCScalar<uint16_t>(g),
             PyBlitzArrayCxx_AsCScalar<uint16_t>(b),
-            y, u, v
-            );
+            y, u, v);
         auto y_ = make_safe(PyBlitzArrayCxx_FromCScalar(y));
         auto u_ = make_safe(PyBlitzArrayCxx_FromCScalar(u));
         auto v_ = make_safe(PyBlitzArrayCxx_FromCScalar(v));
         return Py_BuildValue("(OOO)", y_.get(), u_.get(), v_.get());
       }
+
     case NPY_FLOAT64:
       {
-        double y;
-        double u;
-        double v;
+        double y, u, v;
         bob::ip::rgb_to_yuv_one(
             PyBlitzArrayCxx_AsCScalar<double>(r),
             PyBlitzArrayCxx_AsCScalar<double>(g),
             PyBlitzArrayCxx_AsCScalar<double>(b),
-            y, u, v
-            );
+            y, u, v);
         auto y_ = make_safe(PyBlitzArrayCxx_FromCScalar(y));
         auto u_ = make_safe(PyBlitzArrayCxx_FromCScalar(u));
         auto v_ = make_safe(PyBlitzArrayCxx_FromCScalar(v));
         return Py_BuildValue("(OOO)", y_.get(), u_.get(), v_.get());
       }
+
     default:
       PyErr_Format(PyExc_NotImplementedError, "function has no support for data type `%s', choose from uint8, uint16 or float64", PyBlitzArray_TypenumAsString(type_num));
   }
@@ -236,37 +206,12 @@ static PyObject* PyBobIpColor_YuvToRgb_Scalar(PyObject* args, PyObject* kwds) {
   if (!PyArg_ParseTupleAndKeywords(args, kwds, "OOO", kwlist,
         &y, &u, &v)) return 0;
 
-  //checks all input objects are scalars
-  if (!PyArray_IsAnyScalar(y)) {
-    PyErr_Format(PyExc_TypeError, "input element `y' should be a python or numpy scalar, not `%s'", Py_TYPE(y)->tp_name);
-    return 0;
-  }
+  int type_num = check_scalars("y", y, "u", u, "v", v);
 
-  if (!PyArray_IsAnyScalar(u)) {
-    PyErr_Format(PyExc_TypeError, "input element `u' should be a python or numpy scalar, not `%s'", Py_TYPE(u)->tp_name);
-    return 0;
-  }
-
-  if (!PyArray_IsAnyScalar(v)) {
-    PyErr_Format(PyExc_TypeError, "input element `v' should be a python or numpy scalar, not `%s'", Py_TYPE(v)->tp_name);
-    return 0;
-  }
-
-  //checks all scalars are of the same type
-  if (Py_TYPE(y) != Py_TYPE(u)) {
-    PyErr_Format(PyExc_TypeError, "input scalar type for `y' (`%s') differs from the type for element `u' (`%s')", Py_TYPE(y)->tp_name, Py_TYPE(u)->tp_name);
-    return 0;
-  }
-
-  if (Py_TYPE(y) != Py_TYPE(v)) {
-    PyErr_Format(PyExc_TypeError, "input scalar type for `v' (`%s') differs from the type for element `y' and `u' (`%s')", Py_TYPE(v)->tp_name, Py_TYPE(y)->tp_name);
-    return 0;
-  }
-
-  //checks the type for one of the channels, cast all
-  int type_num = PyArray_ObjectType(y, NPY_NOTYPE);
+  if (type_num == NPY_NOTYPE && PyErr_Occurred()) return 0;
 
   switch (type_num) {
+
     case NPY_UINT8:
       {
         uint8_t r, g, b;
@@ -280,6 +225,7 @@ static PyObject* PyBobIpColor_YuvToRgb_Scalar(PyObject* args, PyObject* kwds) {
         auto b_ = make_safe(PyBlitzArrayCxx_FromCScalar(b));
         return Py_BuildValue("(OOO)", r_.get(), g_.get(), b_.get());
       }
+
     case NPY_UINT16:
       {
         uint16_t r, g, b;
@@ -293,6 +239,7 @@ static PyObject* PyBobIpColor_YuvToRgb_Scalar(PyObject* args, PyObject* kwds) {
         auto b_ = make_safe(PyBlitzArrayCxx_FromCScalar(b));
         return Py_BuildValue("(OOO)", r_.get(), g_.get(), b_.get());
       }
+
     case NPY_FLOAT64:
       {
         double r, g, b;
@@ -306,6 +253,7 @@ static PyObject* PyBobIpColor_YuvToRgb_Scalar(PyObject* args, PyObject* kwds) {
         auto b_ = make_safe(PyBlitzArrayCxx_FromCScalar(b));
         return Py_BuildValue("(OOO)", r_.get(), g_.get(), b_.get());
       }
+
     default:
       PyErr_Format(PyExc_NotImplementedError, "function has no support for data type `%s', choose from uint8, uint16 or float64", PyBlitzArray_TypenumAsString(type_num));
   }
