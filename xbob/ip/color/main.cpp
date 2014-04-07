@@ -36,7 +36,7 @@ static xbob::extension::FunctionDoc s_rgb_to_gray = xbob::extension::FunctionDoc
     "the output array is always returned.\n"
     "\n"
     "If the input is of scalar type, this method will return the gray-scaled "
-    "version for a pixel with the 3 discrete values for red, green and blue. "
+    "version for a pixel with the 3 discrete values for red, green and blue.\n"
     "\n"
     ".. note::\n"
     "\n"
@@ -59,8 +59,7 @@ static xbob::extension::FunctionDoc s_rgb_to_gray = xbob::extension::FunctionDoc
     "   .. code-block:: python\n"
     "      \n"
     "      >> import numpy\n"
-    "      >> r = numpy.uint8(32)\n"
-    "\n"
+    "      >> r = numpy.uint8(32)"
     )
 
     .add_prototype("input, output", "output")
@@ -115,8 +114,7 @@ static xbob::extension::FunctionDoc s_gray_to_rgb = xbob::extension::FunctionDoc
     "   .. code-block:: python\n"
     "      \n"
     "      >> import numpy\n"
-    "      >> y = numpy.uint8(32)\n"
-    "\n"
+    "      >> y = numpy.uint8(32)"
     )
 
     .add_prototype("input, output", "output")
@@ -174,8 +172,7 @@ static xbob::extension::FunctionDoc s_rgb_to_yuv = xbob::extension::FunctionDoc(
     "   .. code-block:: python\n"
     "      \n"
     "      >> import numpy\n"
-    "      >> r = numpy.uint8(32)\n"
-    "\n"
+    "      >> r = numpy.uint8(32)"
     )
 
     .add_prototype("input, output", "output")
@@ -185,7 +182,7 @@ static xbob::extension::FunctionDoc s_rgb_to_yuv = xbob::extension::FunctionDoc(
 
     .add_prototype("r, g, b", "y, u, v")
     .add_parameter("r, g, b", "scalar (uint8|uint16|float64)", "Discrete pixel values for the red, green and blue channels")
-    .add_return("y, u, v", "scalar (uint8|uint16|float64)", "Three scalars are returned when this function is fed discrete RGB values. The types matche the input pixel values")
+    .add_return("y, u, v", "scalar (uint8|uint16|float64)", "Three scalars are returned when this function is fed discrete RGB values. The types match the input pixel values")
 ;
 
 extern PyObject* PyBobIpColor_YuvToRgb (PyObject*, PyObject*, PyObject*);
@@ -233,8 +230,7 @@ static xbob::extension::FunctionDoc s_yuv_to_rgb = xbob::extension::FunctionDoc(
     "   .. code-block:: python\n"
     "      \n"
     "      >> import numpy\n"
-    "      >> r = numpy.uint8(32)\n"
-    "\n"
+    "      >> r = numpy.uint8(32)"
     )
 
     .add_prototype("input, output", "output")
@@ -244,7 +240,7 @@ static xbob::extension::FunctionDoc s_yuv_to_rgb = xbob::extension::FunctionDoc(
 
     .add_prototype("y, u, v", "r, g, b")
     .add_parameter("y, u, v", "scalar (uint8|uint16|float64)", "Discrete pixel values for Y, U (Cb) and V (Cr) channels")
-    .add_return("r, g, b", "scalar (uint8|uint16|float64)", "Three scalars are returned when this function is fed discrete YUV values. The types matche the input pixel values")
+    .add_return("r, g, b", "scalar (uint8|uint16|float64)", "Three scalars are returned when this function is fed discrete YUV values. The types match the input pixel values")
 ;
 
 extern PyObject* PyBobIpColor_RgbToHsv (PyObject*, PyObject*, PyObject*);
@@ -291,8 +287,7 @@ static xbob::extension::FunctionDoc s_rgb_to_hsv = xbob::extension::FunctionDoc(
     "   .. code-block:: python\n"
     "      \n"
     "      >> import numpy\n"
-    "      >> r = numpy.uint8(32)\n"
-    "\n"
+    "      >> r = numpy.uint8(32)"
     )
 
     .add_prototype("input, output", "output")
@@ -302,7 +297,7 @@ static xbob::extension::FunctionDoc s_rgb_to_hsv = xbob::extension::FunctionDoc(
 
     .add_prototype("r, g, b", "h, s, v")
     .add_parameter("r, g, b", "scalar (uint8|uint16|float64)", "Discrete pixel values for the red, green and blue channels")
-    .add_return("h, s, v", "scalar (uint8|uint16|float64)", "Three scalars are returned when this function is fed discrete RGB values. The types matche the input pixel values")
+    .add_return("h, s, v", "scalar (uint8|uint16|float64)", "Three scalars are returned when this function is fed discrete RGB values. The types match the input pixel values")
 ;
 
 extern PyObject* PyBobIpColor_HsvToRgb (PyObject*, PyObject*, PyObject*);
@@ -349,8 +344,7 @@ static xbob::extension::FunctionDoc s_hsv_to_rgb = xbob::extension::FunctionDoc(
     "   .. code-block:: python\n"
     "      \n"
     "      >> import numpy\n"
-    "      >> r = numpy.uint8(32)\n"
-    "\n"
+    "      >> r = numpy.uint8(32)"
     )
 
     .add_prototype("input, output", "output")
@@ -360,7 +354,7 @@ static xbob::extension::FunctionDoc s_hsv_to_rgb = xbob::extension::FunctionDoc(
 
     .add_prototype("h, s, v", "r, g, b")
     .add_parameter("h, s, v", "scalar (uint8|uint16|float64)", "Discrete pixel values for H, S and V  channels")
-    .add_return("r, g, b", "scalar (uint8|uint16|float64)", "Three scalars are returned when this function is fed discrete HSV values. The types matche the input pixel values")
+    .add_return("r, g, b", "scalar (uint8|uint16|float64)", "Three scalars are returned when this function is fed discrete HSV values. The types match the input pixel values")
 ;
 
 extern PyObject* PyBobIpColor_RgbToHsl (PyObject*, PyObject*, PyObject*);
@@ -407,8 +401,7 @@ static xbob::extension::FunctionDoc s_rgb_to_hsl = xbob::extension::FunctionDoc(
     "   .. code-block:: python\n"
     "      \n"
     "      >> import numpy\n"
-    "      >> r = numpy.uint8(32)\n"
-    "\n"
+    "      >> r = numpy.uint8(32)"
     )
 
     .add_prototype("input, output", "output")
@@ -418,7 +411,7 @@ static xbob::extension::FunctionDoc s_rgb_to_hsl = xbob::extension::FunctionDoc(
 
     .add_prototype("r, g, b", "h, s, l")
     .add_parameter("r, g, b", "scalar (uint8|uint16|float64)", "Discrete pixel values for the red, green and blue channels")
-    .add_return("h, s, l", "scalar (uint8|uint16|float64)", "Three scalars are returned when this function is fed discrete RGB values. The types matche the input pixel values")
+    .add_return("h, s, l", "scalar (uint8|uint16|float64)", "Three scalars are returned when this function is fed discrete RGB values. The types match the input pixel values")
 ;
 
 extern PyObject* PyBobIpColor_HslToRgb (PyObject*, PyObject*, PyObject*);
@@ -465,8 +458,7 @@ static xbob::extension::FunctionDoc s_hsl_to_rgb = xbob::extension::FunctionDoc(
     "   .. code-block:: python\n"
     "      \n"
     "      >> import numpy\n"
-    "      >> r = numpy.uint8(32)\n"
-    "\n"
+    "      >> r = numpy.uint8(32)"
     )
 
     .add_prototype("input, output", "output")
@@ -476,7 +468,7 @@ static xbob::extension::FunctionDoc s_hsl_to_rgb = xbob::extension::FunctionDoc(
 
     .add_prototype("h, s, l", "r, g, b")
     .add_parameter("h, s, l", "scalar (uint8|uint16|float64)", "Discrete pixel values for H, S and L  channels")
-    .add_return("r, g, b", "scalar (uint8|uint16|float64)", "Three scalars are returned when this function is fed discrete HSL values. The types matche the input pixel values")
+    .add_return("r, g, b", "scalar (uint8|uint16|float64)", "Three scalars are returned when this function is fed discrete HSL values. The types match the input pixel values")
 ;
 
 static PyMethodDef module_methods[] = {
