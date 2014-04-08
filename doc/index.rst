@@ -8,6 +8,8 @@
  Bob's Color Conversion Routines
 =================================
 
+.. todolist::
+
 This module contains base functionality from Bob bound to Python, available in
 the C++ counter-part ``bob::ip``. It includes color conversion routines from
 and to various different systems.
