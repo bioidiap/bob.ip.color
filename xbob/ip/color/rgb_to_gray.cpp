@@ -37,16 +37,19 @@ static PyObject* PyBobIpColor_RgbToGray_Array(PyObject* args, PyObject* kwds) {
           *PyBlitzArrayCxx_AsBlitz<uint8_t,3>(input),
           *PyBlitzArrayCxx_AsBlitz<uint8_t,2>(output)
           );
+      break;
     case NPY_UINT16:
       bob::ip::rgb_to_gray(
           *PyBlitzArrayCxx_AsBlitz<uint16_t,3>(input),
           *PyBlitzArrayCxx_AsBlitz<uint16_t,2>(output)
           );
+      break;
     case NPY_FLOAT64:
       bob::ip::rgb_to_gray(
           *PyBlitzArrayCxx_AsBlitz<double,3>(input),
           *PyBlitzArrayCxx_AsBlitz<double,2>(output)
           );
+      break;
     default:
       PyErr_Format(PyExc_NotImplementedError, "function has no support for data type `%s', choose from uint8, uint16 or float64", PyBlitzArray_TypenumAsString(input->type_num));
       return 0;
@@ -167,16 +170,19 @@ static PyObject* PyBobIpColor_GrayToRgb_Array(PyObject* args, PyObject* kwds) {
           *PyBlitzArrayCxx_AsBlitz<uint8_t,2>(input),
           *PyBlitzArrayCxx_AsBlitz<uint8_t,3>(output)
           );
+      break;
     case NPY_UINT16:
       bob::ip::gray_to_rgb(
           *PyBlitzArrayCxx_AsBlitz<uint16_t,2>(input),
           *PyBlitzArrayCxx_AsBlitz<uint16_t,3>(output)
           );
+      break;
     case NPY_FLOAT64:
       bob::ip::gray_to_rgb(
           *PyBlitzArrayCxx_AsBlitz<double,2>(input),
           *PyBlitzArrayCxx_AsBlitz<double,3>(output)
           );
+      break;
     default:
       PyErr_Format(PyExc_NotImplementedError, "function has no support for data type `%s', choose from uint8, uint16 or float64", PyBlitzArray_TypenumAsString(input->type_num));
       return 0;
