@@ -14,7 +14,7 @@ import numpy
 import colorsys
 import pkg_resources
 import nose.tools
-import xbob.io
+import xbob.io.base
 
 from . import *
 
@@ -254,7 +254,7 @@ def test_gray_halves():
 
   if platform.architecture()[0] == '64bit':
     # do a full test, require all values to be the same
-    correct = xbob.io.load(F('gray-u8-mids.hdf5'))
+    correct = xbob.io.base.load(F('gray-u8-mids.hdf5'))
     for k in range(correct.shape[0]):
       nose.tools.eq_(correct[k,3],
           rgb_to_gray(*[numpy.uint8(z) for z in correct[k,:3]]))
@@ -262,7 +262,7 @@ def test_gray_halves():
     # do a full test, require all values to be the same
     # use a special 32-bit file. About 1600 cases do not match the 64-bit
     # ones.
-    correct = xbob.io.load(F('gray-u8-mids-32bits.hdf5'))
+    correct = xbob.io.base.load(F('gray-u8-mids-32bits.hdf5'))
     for k in range(correct.shape[0]):
       nose.tools.eq_(correct[k,3],
           rgb_to_gray(*[numpy.uint8(z) for z in correct[k,:3]]))

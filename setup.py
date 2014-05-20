@@ -28,7 +28,7 @@ setup(
     install_requires=[
       'setuptools',
       'xbob.blitz',
-      'xbob.io',
+      'xbob.io.base',
     ],
 
     namespace_packages=[
