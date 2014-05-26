@@ -7,8 +7,8 @@
 ============
 
 This section includes information for using the pure Python API of
-``xbob.ip.color``.
+``bob.ip.color``.
 
 
-.. automodule:: xbob.ip.color
+.. automodule:: bob.ip.color
 

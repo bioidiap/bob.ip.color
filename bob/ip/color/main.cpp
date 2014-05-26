@@ -8,12 +8,12 @@
 #ifdef NO_IMPORT_ARRAY
 #undef NO_IMPORT_ARRAY
 #endif
-#include <xbob.blitz/capi.h>
-#include <xbob.blitz/cleanup.h>
-#include <xbob.extension/documentation.h>
+#include <bob.blitz/capi.h>
+#include <bob.blitz/cleanup.h>
+#include <bob.extension/documentation.h>
 
 extern PyObject* PyBobIpColor_RgbToGray (PyObject*, PyObject*, PyObject*);
-static xbob::extension::FunctionDoc s_rgb_to_gray = xbob::extension::FunctionDoc(
+static bob::extension::FunctionDoc s_rgb_to_gray = bob::extension::FunctionDoc(
     "rgb_to_gray",
 
     "Converts an RGB color-coded pixel or a full array (image) to grayscale",
@@ -73,7 +73,7 @@ static xbob::extension::FunctionDoc s_rgb_to_gray = xbob::extension::FunctionDoc
 ;
 
 extern PyObject* PyBobIpColor_GrayToRgb (PyObject*, PyObject*, PyObject*);
-static xbob::extension::FunctionDoc s_gray_to_rgb = xbob::extension::FunctionDoc(
+static bob::extension::FunctionDoc s_gray_to_rgb = bob::extension::FunctionDoc(
     "gray_to_rgb",
 
     "Converts a gray pixel or a full array (image) to RGB",
@@ -128,7 +128,7 @@ static xbob::extension::FunctionDoc s_gray_to_rgb = xbob::extension::FunctionDoc
 ;
 
 extern PyObject* PyBobIpColor_RgbToYuv (PyObject*, PyObject*, PyObject*);
-static xbob::extension::FunctionDoc s_rgb_to_yuv = xbob::extension::FunctionDoc(
+static bob::extension::FunctionDoc s_rgb_to_yuv = bob::extension::FunctionDoc(
     "rgb_to_yuv",
 
     "Converts an RGB color-coded pixel or a full array (image) to YUV",
@@ -186,7 +186,7 @@ static xbob::extension::FunctionDoc s_rgb_to_yuv = xbob::extension::FunctionDoc(
 ;
 
 extern PyObject* PyBobIpColor_YuvToRgb (PyObject*, PyObject*, PyObject*);
-static xbob::extension::FunctionDoc s_yuv_to_rgb = xbob::extension::FunctionDoc(
+static bob::extension::FunctionDoc s_yuv_to_rgb = bob::extension::FunctionDoc(
     "yuv_to_rgb",
 
     "Converts an YUV color-coded pixel or a full array (image) to RGB",
@@ -244,7 +244,7 @@ static xbob::extension::FunctionDoc s_yuv_to_rgb = xbob::extension::FunctionDoc(
 ;
 
 extern PyObject* PyBobIpColor_RgbToHsv (PyObject*, PyObject*, PyObject*);
-static xbob::extension::FunctionDoc s_rgb_to_hsv = xbob::extension::FunctionDoc(
+static bob::extension::FunctionDoc s_rgb_to_hsv = bob::extension::FunctionDoc(
     "rgb_to_hsv",
 
     "Converts an RGB color-coded pixel or a full array (image) to HSV",
@@ -301,7 +301,7 @@ static xbob::extension::FunctionDoc s_rgb_to_hsv = xbob::extension::FunctionDoc(
 ;
 
 extern PyObject* PyBobIpColor_HsvToRgb (PyObject*, PyObject*, PyObject*);
-static xbob::extension::FunctionDoc s_hsv_to_rgb = xbob::extension::FunctionDoc(
+static bob::extension::FunctionDoc s_hsv_to_rgb = bob::extension::FunctionDoc(
     "hsv_to_rgb",
 
     "Converts an HSV color-coded pixel or a full array (image) to RGB",
@@ -358,7 +358,7 @@ static xbob::extension::FunctionDoc s_hsv_to_rgb = xbob::extension::FunctionDoc(
 ;
 
 extern PyObject* PyBobIpColor_RgbToHsl (PyObject*, PyObject*, PyObject*);
-static xbob::extension::FunctionDoc s_rgb_to_hsl = xbob::extension::FunctionDoc(
+static bob::extension::FunctionDoc s_rgb_to_hsl = bob::extension::FunctionDoc(
     "rgb_to_hsl",
 
     "Converts an RGB color-coded pixel or a full array (image) to HSL",
@@ -415,7 +415,7 @@ static xbob::extension::FunctionDoc s_rgb_to_hsl = xbob::extension::FunctionDoc(
 ;
 
 extern PyObject* PyBobIpColor_HslToRgb (PyObject*, PyObject*, PyObject*);
-static xbob::extension::FunctionDoc s_hsl_to_rgb = xbob::extension::FunctionDoc(
+static bob::extension::FunctionDoc s_hsl_to_rgb = bob::extension::FunctionDoc(
     "hsl_to_rgb",
 
     "Converts an HSL color-coded pixel or a full array (image) to RGB",
@@ -528,7 +528,7 @@ PyDoc_STRVAR(module_docstr, "Bob Image Processing Color Conversion");
 #if PY_VERSION_HEX >= 0x03000000
 static PyModuleDef module_definition = {
   PyModuleDef_HEAD_INIT,
-  XBOB_EXT_MODULE_NAME,
+  BOB_EXT_MODULE_NAME,
   module_docstr,
   -1,
   module_methods,
@@ -541,18 +541,18 @@ static PyObject* create_module (void) {
 # if PY_VERSION_HEX >= 0x03000000
   PyObject* m = PyModule_Create(&module_definition);
 # else
-  PyObject* m = Py_InitModule3(XBOB_EXT_MODULE_NAME, module_methods, module_docstr);
+  PyObject* m = Py_InitModule3(BOB_EXT_MODULE_NAME, module_methods, module_docstr);
 # endif
   if (!m) return 0;
   auto m_ = make_safe(m); ///< protects against early returns
 
-  if (PyModule_AddStringConstant(m, "__version__", XBOB_EXT_MODULE_VERSION) < 0)
+  if (PyModule_AddStringConstant(m, "__version__", BOB_EXT_MODULE_VERSION) < 0)
     return 0;
 
   /* imports dependencies */
-  if (import_xbob_blitz() < 0) {
+  if (import_bob_blitz() < 0) {
     PyErr_Print();
-    PyErr_Format(PyExc_ImportError, "cannot import `%s'", XBOB_EXT_MODULE_NAME);
+    PyErr_Format(PyExc_ImportError, "cannot import `%s'", BOB_EXT_MODULE_NAME);
     return 0;
   }
 
@@ -561,7 +561,7 @@ static PyObject* create_module (void) {
 
 }
 
-PyMODINIT_FUNC XBOB_EXT_ENTRY_NAME (void) {
+PyMODINIT_FUNC BOB_EXT_ENTRY_NAME (void) {
 # if PY_VERSION_HEX >= 0x03000000
   return
 # endif

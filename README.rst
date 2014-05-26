@@ -2,16 +2,16 @@
 .. Andre Anjos <andre.anjos@idiap.ch>
 .. Thu 30 Jan 08:46:53 2014 CET
 
-.. image:: https://travis-ci.org/bioidiap/xbob.ip.color.svg?branch=master
-   :target: https://travis-ci.org/bioidiap/xbob.ip.color
-.. image:: https://coveralls.io/repos/bioidiap/xbob.ip.color/badge.png
-   :target: https://coveralls.io/r/bioidiap/xbob.ip.color
-.. image:: http://img.shields.io/github/tag/bioidiap/xbob.ip.color.png
-   :target: https://github.com/bioidiap/xbob.ip.color
-.. image:: http://img.shields.io/pypi/v/xbob.ip.color.png
-   :target: https://pypi.python.org/pypi/xbob.ip.color
-.. image:: http://img.shields.io/pypi/dm/xbob.ip.color.png
-   :target: https://pypi.python.org/pypi/xbob.ip.color
+.. image:: https://travis-ci.org/bioidiap/bob.ip.color.svg?branch=master
+   :target: https://travis-ci.org/bioidiap/bob.ip.color
+.. image:: https://coveralls.io/repos/bioidiap/bob.ip.color/badge.png
+   :target: https://coveralls.io/r/bioidiap/bob.ip.color
+.. image:: http://img.shields.io/github/tag/bioidiap/bob.ip.color.png
+   :target: https://github.com/bioidiap/bob.ip.color
+.. image:: http://img.shields.io/pypi/v/bob.ip.color.png
+   :target: https://pypi.python.org/pypi/bob.ip.color
+.. image:: http://img.shields.io/pypi/dm/bob.ip.color.png
+   :target: https://pypi.python.org/pypi/bob.ip.color
 
 ==================================
  Python bindings for bob.ip.color
@@ -42,7 +42,7 @@ Testing
 
 You can run a set of tests using the nose test runner::
 
-  $ nosetests -sv xbob.ip.color
+  $ nosetests -sv bob.ip.color
 
 .. warning::
 
@@ -59,7 +59,7 @@ You can run our documentation tests using sphinx itself::
 
 You can test overall test coverage with::
 
-  $ nosetests --with-coverage --cover-package=xbob.ip.color
+  $ nosetests --with-coverage --cover-package=bob.ip.color
 
 The ``coverage`` egg must be installed for this to work properly.
 

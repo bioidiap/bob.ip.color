@@ -4,18 +4,18 @@
 # Thu 30 Jan 08:45:49 2014 CET
 
 from setuptools import setup, find_packages, dist
-dist.Distribution(dict(setup_requires=['xbob.blitz']))
-from xbob.blitz.extension import Extension
+dist.Distribution(dict(setup_requires=['bob.blitz']))
+from bob.blitz.extension import Extension
 
 packages = ['bob-ip >= 1.2.2']
 version = '2.0.0a0'
 
 setup(
 
-    name='xbob.ip.color',
+    name='bob.ip.color',
     version=version,
     description='Color conversion utilities',
-    url='http://github.com/bioidiap/xbob.ip.color',
+    url='http://github.com/bioidiap/bob.ip.color',
     license='BSD',
     author='Andre Anjos',
     author_email='andre.anjos@idiap.ch',
@@ -27,31 +27,31 @@ setup(
 
     install_requires=[
       'setuptools',
-      'xbob.blitz',
-      'xbob.io.base',
+      'bob.blitz',
+      'bob.io.base',
     ],
 
     namespace_packages=[
-      "xbob",
-      "xbob.ip",
+      "bob",
+      "bob.ip",
       ],
 
     ext_modules = [
-      Extension("xbob.ip.color.version",
+      Extension("bob.ip.color.version",
         [
-          "xbob/ip/color/version.cpp",
+          "bob/ip/color/version.cpp",
           ],
         version = version,
         packages = packages,
         ),
-      Extension("xbob.ip.color._library",
+      Extension("bob.ip.color._library",
         [
-          "xbob/ip/color/utils.cpp",
-          "xbob/ip/color/rgb_to_gray.cpp",
-          "xbob/ip/color/rgb_to_yuv.cpp",
-          "xbob/ip/color/rgb_to_hsv.cpp",
-          "xbob/ip/color/rgb_to_hsl.cpp",
-          "xbob/ip/color/main.cpp",
+          "bob/ip/color/utils.cpp",
+          "bob/ip/color/rgb_to_gray.cpp",
+          "bob/ip/color/rgb_to_yuv.cpp",
+          "bob/ip/color/rgb_to_hsv.cpp",
+          "bob/ip/color/rgb_to_hsl.cpp",
+          "bob/ip/color/main.cpp",
           ],
         packages = packages,
         version = version,
