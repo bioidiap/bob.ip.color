@@ -8,7 +8,6 @@
  */
 
 #include "utils.h"
-#include <bob/ip/color.h>
 
 static PyObject* PyBobIpColor_RgbToYuv_Array(PyObject* args, PyObject* kwds) {
 
@@ -33,19 +32,19 @@ static PyObject* PyBobIpColor_RgbToYuv_Array(PyObject* args, PyObject* kwds) {
 
   switch (input->type_num) {
     case NPY_UINT8:
-      bob::ip::rgb_to_yuv(
+      bob::ip::color::rgb_to_yuv(
           *PyBlitzArrayCxx_AsBlitz<uint8_t,3>(input),
           *PyBlitzArrayCxx_AsBlitz<uint8_t,3>(output)
           );
       break;
     case NPY_UINT16:
-      bob::ip::rgb_to_yuv(
+      bob::ip::color::rgb_to_yuv(
           *PyBlitzArrayCxx_AsBlitz<uint16_t,3>(input),
           *PyBlitzArrayCxx_AsBlitz<uint16_t,3>(output)
           );
       break;
     case NPY_FLOAT64:
-      bob::ip::rgb_to_yuv(
+      bob::ip::color::rgb_to_yuv(
           *PyBlitzArrayCxx_AsBlitz<double,3>(input),
           *PyBlitzArrayCxx_AsBlitz<double,3>(output)
           );
@@ -81,7 +80,7 @@ static PyObject* PyBobIpColor_RgbToYuv_Scalar(PyObject* args, PyObject* kwds) {
     case NPY_UINT8:
       {
         uint8_t y, u, v;
-        bob::ip::rgb_to_yuv_one(
+        bob::ip::color::rgb_to_yuv_one(
             PyBlitzArrayCxx_AsCScalar<uint8_t>(r),
             PyBlitzArrayCxx_AsCScalar<uint8_t>(g),
             PyBlitzArrayCxx_AsCScalar<uint8_t>(b),
@@ -95,7 +94,7 @@ static PyObject* PyBobIpColor_RgbToYuv_Scalar(PyObject* args, PyObject* kwds) {
     case NPY_UINT16:
       {
         uint16_t y, u, v;
-        bob::ip::rgb_to_yuv_one(
+        bob::ip::color::rgb_to_yuv_one(
             PyBlitzArrayCxx_AsCScalar<uint16_t>(r),
             PyBlitzArrayCxx_AsCScalar<uint16_t>(g),
             PyBlitzArrayCxx_AsCScalar<uint16_t>(b),
@@ -109,7 +108,7 @@ static PyObject* PyBobIpColor_RgbToYuv_Scalar(PyObject* args, PyObject* kwds) {
     case NPY_FLOAT64:
       {
         double y, u, v;
-        bob::ip::rgb_to_yuv_one(
+        bob::ip::color::rgb_to_yuv_one(
             PyBlitzArrayCxx_AsCScalar<double>(r),
             PyBlitzArrayCxx_AsCScalar<double>(g),
             PyBlitzArrayCxx_AsCScalar<double>(b),
@@ -173,19 +172,19 @@ static PyObject* PyBobIpColor_YuvToRgb_Array(PyObject* args, PyObject* kwds) {
 
   switch (input->type_num) {
     case NPY_UINT8:
-      bob::ip::yuv_to_rgb(
+      bob::ip::color::yuv_to_rgb(
           *PyBlitzArrayCxx_AsBlitz<uint8_t,3>(input),
           *PyBlitzArrayCxx_AsBlitz<uint8_t,3>(output)
           );
       break;
     case NPY_UINT16:
-      bob::ip::yuv_to_rgb(
+      bob::ip::color::yuv_to_rgb(
           *PyBlitzArrayCxx_AsBlitz<uint16_t,3>(input),
           *PyBlitzArrayCxx_AsBlitz<uint16_t,3>(output)
           );
       break;
     case NPY_FLOAT64:
-      bob::ip::yuv_to_rgb(
+      bob::ip::color::yuv_to_rgb(
           *PyBlitzArrayCxx_AsBlitz<double,3>(input),
           *PyBlitzArrayCxx_AsBlitz<double,3>(output)
           );
@@ -221,7 +220,7 @@ static PyObject* PyBobIpColor_YuvToRgb_Scalar(PyObject* args, PyObject* kwds) {
     case NPY_UINT8:
       {
         uint8_t r, g, b;
-        bob::ip::yuv_to_rgb_one(
+        bob::ip::color::yuv_to_rgb_one(
             PyBlitzArrayCxx_AsCScalar<uint8_t>(y),
             PyBlitzArrayCxx_AsCScalar<uint8_t>(u),
             PyBlitzArrayCxx_AsCScalar<uint8_t>(v),
@@ -235,7 +234,7 @@ static PyObject* PyBobIpColor_YuvToRgb_Scalar(PyObject* args, PyObject* kwds) {
     case NPY_UINT16:
       {
         uint16_t r, g, b;
-        bob::ip::yuv_to_rgb_one(
+        bob::ip::color::yuv_to_rgb_one(
             PyBlitzArrayCxx_AsCScalar<uint16_t>(y),
             PyBlitzArrayCxx_AsCScalar<uint16_t>(u),
             PyBlitzArrayCxx_AsCScalar<uint16_t>(v),
@@ -249,7 +248,7 @@ static PyObject* PyBobIpColor_YuvToRgb_Scalar(PyObject* args, PyObject* kwds) {
     case NPY_FLOAT64:
       {
         double r, g, b;
-        bob::ip::yuv_to_rgb_one(
+        bob::ip::color::yuv_to_rgb_one(
             PyBlitzArrayCxx_AsCScalar<double>(y),
             PyBlitzArrayCxx_AsCScalar<double>(u),
             PyBlitzArrayCxx_AsCScalar<double>(v),

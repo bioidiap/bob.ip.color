@@ -8,7 +8,6 @@
  */
 
 #include "utils.h"
-#include <bob/ip/color.h>
 
 static PyObject* PyBobIpColor_RgbToGray_Array(PyObject* args, PyObject* kwds) {
 
@@ -33,19 +32,19 @@ static PyObject* PyBobIpColor_RgbToGray_Array(PyObject* args, PyObject* kwds) {
 
   switch (input->type_num) {
     case NPY_UINT8:
-      bob::ip::rgb_to_gray(
+      bob::ip::color::rgb_to_gray(
           *PyBlitzArrayCxx_AsBlitz<uint8_t,3>(input),
           *PyBlitzArrayCxx_AsBlitz<uint8_t,2>(output)
           );
       break;
     case NPY_UINT16:
-      bob::ip::rgb_to_gray(
+      bob::ip::color::rgb_to_gray(
           *PyBlitzArrayCxx_AsBlitz<uint16_t,3>(input),
           *PyBlitzArrayCxx_AsBlitz<uint16_t,2>(output)
           );
       break;
     case NPY_FLOAT64:
-      bob::ip::rgb_to_gray(
+      bob::ip::color::rgb_to_gray(
           *PyBlitzArrayCxx_AsBlitz<double,3>(input),
           *PyBlitzArrayCxx_AsBlitz<double,2>(output)
           );
@@ -80,7 +79,7 @@ static PyObject* PyBobIpColor_RgbToGray_Scalar(PyObject* args, PyObject* kwds) {
     case NPY_UINT8:
       {
         uint8_t retval;
-        bob::ip::rgb_to_gray_one(
+        bob::ip::color::rgb_to_gray_one(
             PyBlitzArrayCxx_AsCScalar<uint8_t>(r),
             PyBlitzArrayCxx_AsCScalar<uint8_t>(g),
             PyBlitzArrayCxx_AsCScalar<uint8_t>(b),
@@ -92,7 +91,7 @@ static PyObject* PyBobIpColor_RgbToGray_Scalar(PyObject* args, PyObject* kwds) {
     case NPY_UINT16:
       {
         uint16_t retval;
-        bob::ip::rgb_to_gray_one(
+        bob::ip::color::rgb_to_gray_one(
             PyBlitzArrayCxx_AsCScalar<uint16_t>(r),
             PyBlitzArrayCxx_AsCScalar<uint16_t>(g),
             PyBlitzArrayCxx_AsCScalar<uint16_t>(b),
@@ -104,7 +103,7 @@ static PyObject* PyBobIpColor_RgbToGray_Scalar(PyObject* args, PyObject* kwds) {
     case NPY_FLOAT64:
       {
         double retval;
-        bob::ip::rgb_to_gray_one(
+        bob::ip::color::rgb_to_gray_one(
             PyBlitzArrayCxx_AsCScalar<double>(r),
             PyBlitzArrayCxx_AsCScalar<double>(g),
             PyBlitzArrayCxx_AsCScalar<double>(b),
@@ -166,19 +165,19 @@ static PyObject* PyBobIpColor_GrayToRgb_Array(PyObject* args, PyObject* kwds) {
 
   switch (input->type_num) {
     case NPY_UINT8:
-      bob::ip::gray_to_rgb(
+      bob::ip::color::gray_to_rgb(
           *PyBlitzArrayCxx_AsBlitz<uint8_t,2>(input),
           *PyBlitzArrayCxx_AsBlitz<uint8_t,3>(output)
           );
       break;
     case NPY_UINT16:
-      bob::ip::gray_to_rgb(
+      bob::ip::color::gray_to_rgb(
           *PyBlitzArrayCxx_AsBlitz<uint16_t,2>(input),
           *PyBlitzArrayCxx_AsBlitz<uint16_t,3>(output)
           );
       break;
     case NPY_FLOAT64:
-      bob::ip::gray_to_rgb(
+      bob::ip::color::gray_to_rgb(
           *PyBlitzArrayCxx_AsBlitz<double,2>(input),
           *PyBlitzArrayCxx_AsBlitz<double,3>(output)
           );
@@ -210,7 +209,7 @@ static PyObject* PyBobIpColor_GrayToRgb_Scalar(PyObject* args, PyObject* kwds) {
     case NPY_UINT8:
       {
         uint8_t r, g, b;
-        bob::ip::gray_to_rgb_one(PyBlitzArrayCxx_AsCScalar<uint8_t>(y), r, g, b);
+        bob::ip::color::gray_to_rgb_one(PyBlitzArrayCxx_AsCScalar<uint8_t>(y), r, g, b);
         auto r_ = make_safe(PyBlitzArrayCxx_FromCScalar(r));
         auto g_ = make_safe(PyBlitzArrayCxx_FromCScalar(g));
         auto b_ = make_safe(PyBlitzArrayCxx_FromCScalar(b));
@@ -219,7 +218,7 @@ static PyObject* PyBobIpColor_GrayToRgb_Scalar(PyObject* args, PyObject* kwds) {
     case NPY_UINT16:
       {
         uint16_t r, g, b;
-        bob::ip::gray_to_rgb_one(PyBlitzArrayCxx_AsCScalar<uint16_t>(y), r, g, b);
+        bob::ip::color::gray_to_rgb_one(PyBlitzArrayCxx_AsCScalar<uint16_t>(y), r, g, b);
         auto r_ = make_safe(PyBlitzArrayCxx_FromCScalar(r));
         auto g_ = make_safe(PyBlitzArrayCxx_FromCScalar(g));
         auto b_ = make_safe(PyBlitzArrayCxx_FromCScalar(b));
@@ -228,7 +227,7 @@ static PyObject* PyBobIpColor_GrayToRgb_Scalar(PyObject* args, PyObject* kwds) {
     case NPY_FLOAT64:
       {
         double r, g, b;
-        bob::ip::gray_to_rgb_one(PyBlitzArrayCxx_AsCScalar<double>(y), r, g, b);
+        bob::ip::color::gray_to_rgb_one(PyBlitzArrayCxx_AsCScalar<double>(y), r, g, b);
         auto r_ = make_safe(PyBlitzArrayCxx_FromCScalar(r));
         auto g_ = make_safe(PyBlitzArrayCxx_FromCScalar(g));
         auto b_ = make_safe(PyBlitzArrayCxx_FromCScalar(b));
