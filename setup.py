@@ -3,13 +3,11 @@
 # Andre Anjos <andre.anjos@idiap.ch>
 # Thu 30 Jan 08:45:49 2014 CET
 
-from setuptools import setup, find_packages, dist
-dist.Distribution(dict(setup_requires=['bob.blitz', 'bob.core', 'bob.io.base']))
-from bob.blitz.extension import Extension, Library, build_ext
+bob_packages = ['bob.core', 'bob.io.base']
 
-import os
-package_dir = os.path.dirname(os.path.realpath(__file__))
-target_dir = os.path.join(package_dir, 'bob', 'ip', 'color')
+from setuptools import setup, find_packages, dist
+dist.Distribution(dict(setup_requires=['bob.blitz'] + bob_packages))
+from bob.blitz.extension import Extension, Library, build_ext
 
 version = '2.0.0a0'
 
@@ -46,18 +44,16 @@ setup(
         [
           "bob/ip/color/version.cpp",
         ],
-        bob_packages = ['bob.core', 'bob.io.base'],
+        bob_packages = bob_packages,
         version = version,
       ),
 
-      Library("bob_ip_color",
+      Library("bob.ip.color.bob_ip_color",
         [
           "bob/ip/color/cpp/color.cpp",
         ],
         version = version,
-        package_directory = package_dir,
-        target_directory = target_dir,
-        bob_packages = ['bob.core', 'bob.io.base'],
+        bob_packages = bob_packages,
       ),
 
       Extension("bob.ip.color._library",
@@ -70,8 +66,7 @@ setup(
           "bob/ip/color/main.cpp",
         ],
         version = version,
-        bob_packages = ['bob.core', 'bob.io.base'],
-        libraries = ['bob_ip_color']
+        bob_packages = bob_packages,
       ),
     ],
 
