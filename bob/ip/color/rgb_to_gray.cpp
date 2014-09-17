@@ -256,7 +256,7 @@ PyObject* PyBobIpColor_GrayToRgb (PyObject*, PyObject* args, PyObject* kwds) {
           arg = PyList_GET_ITEM(tmp, 0);
         }
 
-        if (PyArray_CheckScalar(arg) || PyNumber_Check(arg)) {
+        if (PyArray_CheckScalar(arg)) {
           return PyBobIpColor_GrayToRgb_Scalar(args, kwds);
         }
         //else, continues to the next case item

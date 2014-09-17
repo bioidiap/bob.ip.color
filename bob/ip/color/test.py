@@ -42,6 +42,24 @@ def test_string_raises_gray():
 
   r = rgb_to_gray("3", "4", "5")
 
+
+def test_gray():
+
+  # This test verifies that gray-scale conversion works in both directions, for both images and numbers
+  gray_image = numpy.random.random((30,30))
+  color_image = bob.ip.color.gray_to_rgb(gray_image)
+
+  new_gray_image = bob.ip.color.rgb_to_gray(color_image)
+  assert numpy.allclose(gray_image, new_gray_image)
+
+  for y in range(30):
+    for x in range(30):
+      r, g, b = bob.ip.color.gray_to_rgb(gray_image[y,x])
+      gray = bob.ip.color.rgb_to_gray(r, g, b)
+
+      assert abs(gray - gray_image[y,x]) < 1e-6
+
+
 def test_hsv():
 
   # This test verifies that color conversion is reversible for HSV <=> RGB
