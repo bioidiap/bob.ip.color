@@ -18,7 +18,7 @@ setup(
 
     name='bob.ip.color',
     version=version,
-    description='Color conversion utilities',
+    description='Color Conversion Utilities of Bob',
     url='http://github.com/bioidiap/bob.ip.color',
     license='BSD',
     author='Andre Anjos',
@@ -74,7 +74,8 @@ setup(
     },
 
     classifiers = [
-      'Development Status :: 3 - Alpha',
+      'Framework :: Bob',
+      'Development Status :: 4 - Beta',
       'Intended Audience :: Developers',
       'License :: OSI Approved :: BSD License',
       'Natural Language :: English',

@@ -10,9 +10,8 @@
 
 .. todolist::
 
-This module contains base functionality from Bob bound to Python, available in
-the C++ counter-part ``bob::ip``. It includes color conversion routines from
-and to various different systems.
+This module contains base functionality from Bob bound to Python, available in the C++ counter-part ``bob::ip::color``.
+It includes color conversion routines from and to various different color spaces.
 
 Documentation
 -------------
