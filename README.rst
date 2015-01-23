@@ -6,7 +6,7 @@
    :target: http://pythonhosted.org/bob.ip.color/index.html
 .. image:: http://img.shields.io/badge/docs-latest-orange.png
    :target: https://www.idiap.ch/software/bob/docs/latest/bioidiap/bob.ip.color/master/index.html
-.. image:: https://travis-ci.org/bioidiap/bob.ip.color.svg?branch=v2.0.1
+.. image:: https://travis-ci.org/bioidiap/bob.ip.color.svg?branch=master
    :target: https://travis-ci.org/bioidiap/bob.ip.color
 .. image:: https://coveralls.io/repos/bioidiap/bob.ip.color/badge.png
    :target: https://coveralls.io/r/bioidiap/bob.ip.color
