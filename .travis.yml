@@ -22,7 +22,7 @@ install:
 - python bootstrap-buildout.py
 - CPPFLAGS=--coverage LDFLAGS=--coverage ./bin/buildout buildout:debug=false buildout:develop=. buildout:extensions=bob.buildout buildout:auto-checkout=
 script:
-- ./bin/python -c 'import pkr_resources; from bob.ip.color import get_config; print(get_config())'
+- ./bin/python -c 'import pkg_resources; from bob.ip.color import get_config; print(get_config())'
 - ./bin/coverage run --source=bob.ip.color ./bin/nosetests -sv
 - ./bin/sphinx-build -b doctest doc sphinx
 - ./bin/sphinx-build -b html doc sphinx
