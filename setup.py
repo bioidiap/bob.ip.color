@@ -15,6 +15,9 @@ build_requires = load_requirements()
 # Define package version
 version = open("version.txt").read().rstrip()
 
+packages = ['boost']
+boost_modules = ['system']
+
 setup(
 
     name='bob.ip.color',
@@ -46,6 +49,8 @@ setup(
         ],
         bob_packages = bob_packages,
         version = version,
+        packages = packages,
+        boost_modules = boost_modules,
       ),
 
       Library("bob.ip.color.bob_ip_color",
@@ -54,6 +59,8 @@ setup(
         ],
         version = version,
         bob_packages = bob_packages,
+        packages = packages,
+        boost_modules = boost_modules,
       ),
 
       Extension("bob.ip.color._library",
@@ -67,6 +74,8 @@ setup(
         ],
         version = version,
         bob_packages = bob_packages,
+        packages = packages,
+        boost_modules = boost_modules,
       ),
     ],
 
