@@ -10,6 +10,8 @@
 #endif
 #include <bob.blitz/capi.h>
 #include <bob.blitz/cleanup.h>
+#include <bob.core/api.h>
+#include <bob.io.base/api.h>
 #include <bob.extension/documentation.h>
 
 extern PyObject* PyBobIpColor_RgbToGray (PyObject*, PyObject*, PyObject*);
@@ -547,15 +549,11 @@ static PyObject* create_module (void) {
   auto m_ = make_safe(m); ///< protects against early returns
 
   /* imports dependencies */
-  if (import_bob_blitz() < 0) {
-    PyErr_Print();
-    PyErr_Format(PyExc_ImportError, "cannot import `%s'", BOB_EXT_MODULE_NAME);
-    return 0;
-  }
+  if (import_bob_blitz() < 0) return 0;
+  if (import_bob_core_logging() < 0) return 0;
+  if (import_bob_io_base() < 0) return 0;
 
-  Py_INCREF(m);
-  return m;
-
+  return Py_BuildValue("O", m);
 }
 
 PyMODINIT_FUNC BOB_EXT_ENTRY_NAME (void) {
