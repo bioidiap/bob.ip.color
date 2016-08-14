@@ -23,7 +23,7 @@ setup(
     name='bob.ip.color',
     version=version,
     description='Color Conversion Utilities of Bob',
-    url='http://github.com/bioidiap/bob.ip.color',
+    url='http://gitlab.idiap.ch/bob/bob.ip.color',
     license='BSD',
     author='Andre Anjos',
     author_email='andre.anjos@idiap.ch',
