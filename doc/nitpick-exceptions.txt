@@ -1,0 +1,7 @@
+# These are not documented properly on numpy's manual
+py:class numpy.uint8
+py:class numpy.uint16
+py:class numpy.float64
+
+# These are not proper py:exc on Python's 2.7 manual
+py:exc TypeError
