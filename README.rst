@@ -2,9 +2,9 @@
 .. Sun 14 Aug 2016 20:03:40 CEST
 
 .. image:: http://img.shields.io/badge/docs-stable-yellow.svg
-   :target: http://pythonhosted.org/bob.ip.color/index.html
+   :target: https://www.idiap.ch/software/bob/docs/bob/bob.ip.color/stable/index.html
 .. image:: http://img.shields.io/badge/docs-latest-orange.svg
-   :target: https://www.idiap.ch/software/bob/docs/latest/bob/bob.ip.color/master/index.html
+   :target: https://www.idiap.ch/software/bob/docs/bob/bob.ip.color/master/index.html
 .. image:: https://gitlab.idiap.ch/bob/bob.ip.color/badges/master/build.svg
    :target: https://gitlab.idiap.ch/bob/bob.ip.color/commits/master
 .. image:: https://gitlab.idiap.ch/bob/bob.ip.color/badges/master/coverage.svg
@@ -12,8 +12,6 @@
 .. image:: https://img.shields.io/badge/gitlab-project-0000c0.svg
    :target: https://gitlab.idiap.ch/bob/bob.ip.color
 .. image:: http://img.shields.io/pypi/v/bob.ip.color.svg
-   :target: https://pypi.python.org/pypi/bob.ip.color
-.. image:: http://img.shields.io/pypi/dm/bob.ip.color.svg
    :target: https://pypi.python.org/pypi/bob.ip.color
 
 
@@ -28,7 +26,7 @@ Bob_. It contains Bob's Image Processing tools for color conversion.
 Installation
 ------------
 
-Complete Bob's `installation`_ instructions. Then, to install this pacakge,
+Complete Bob's `installation`_ instructions. Then, to install this package,
 run::
 
   $ conda install bob.ip.color
